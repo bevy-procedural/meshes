@@ -1,0 +1,69 @@
+[package]
+name = "procedural-meshes"
+description = "A procedural meshes system for the Bevy game engine."
+version = "0.1.0"
+edition = "2021"
+categories = ["graphics", "rendering", "game-development", "simulation"]
+keywords = ["gamedev", "graphics", "bevy", "procedural", "meshes"]
+homepage = "https://bevy-procedural.org/meshes"
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+repository = "https://github.com/bevy-procedural/meshes"
+documentation = "https://docs.bevy-procedural.org/meshes"
+rust-version = "1.76.0"
+
+[lib]
+name = "procedural_meshes"
+path = "src/lib.rs"
+crate-type = ["rlib"]
+
+[workspace]
+members = ["editor"]
+
+[workspace.lints.clippy]
+type_complexity = "allow"
+doc_markdown = "warn"
+manual_let_else = "warn"
+undocumented_unsafe_blocks = "warn"
+redundant_else = "warn"
+match_same_arms = "warn"
+semicolon_if_nothing_returned = "warn"
+map_flatten = "warn"
+
+ptr_as_ptr = "warn"
+ptr_cast_constness = "warn"
+ref_as_ptr = "warn"
+
+[workspace.lints.rust]
+unsafe_op_in_unsafe_fn = "warn"
+# missing_docs = "warn"
+
+[lints]
+workspace = true
+
+[dependencies]
+bevy = { version = "0.13.0", features = ["dynamic_linking"] }
+bevy-inspector-egui = "0.23.2"
+lyon = "1.0.1"
+
+[[example]]
+name = "simple"
+path = "examples/simple.rs"
+doc-scrape-examples = true
+
+# Optional: Uncommenting the following improves compile times, but reduces the amount of debug info to 'line number tables only'
+# In most cases the gains are negligible, but if you are on macos and have slow compile times you should see significant gains.
+#[profile.dev]
+#debug = 1
+
+# Enable a small amount of optimization in debug mode
+[profile.dev]
+opt-level = 1
+
+# Enable high optimizations for dependencies (incl. Bevy), but not for our code:
+[profile.dev.package."*"]
+opt-level = 3
+
+[profile.dev.package.gfx-backend-vulkan]
+opt-level = 3
+debug-assertions = false

@@ -2,17 +2,20 @@ use super::super::PMesh;
 use super::util::{get_adapter, MeshoptMesh};
 use crate::IndexType;
 use bevy::prelude::*;
+
+#[cfg(feature = "fast-dev")]
 use bevy_inspector_egui::{inspector_options::ReflectInspectorOptions, InspectorOptions};
 
 /// Settings for the meshopt Optimization
-#[derive(Reflect, Resource, InspectorOptions)]
-#[reflect(Resource, InspectorOptions)]
+#[derive(Reflect, Resource)]
+#[reflect(Resource)]
+#[cfg_attr(feature = "fast-dev", derive(InspectorOptions))]
+#[cfg_attr(feature = "fast-dev", reflect(InspectorOptions))]
 pub struct MeshoptSettings {
     /// Whether the mesh should be simplified
     pub simplify: bool,
 
     /// The maximum error allowed when simplifying the mesh
-    #[inspector(min = 0.0, max = 1.0, speed = 0.001)]
     pub simplify_target_error: f32,
 
     /// The target percentage of the original vertex count when simplifying the mesh

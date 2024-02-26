@@ -2,13 +2,17 @@ use super::super::PMesh;
 use super::util::get_adapter;
 use crate::IndexType;
 use bevy::{ecs::system::Resource, prelude::*};
-use bevy_inspector_egui::{inspector_options::ReflectInspectorOptions, InspectorOptions};
 use meshopt::analyze::analyze_vertex_cache;
 use meshopt::{analyze_overdraw, analyze_vertex_fetch};
 
+#[cfg(feature = "fast-dev")]
+use bevy_inspector_egui::{inspector_options::ReflectInspectorOptions, InspectorOptions};
+
 /// Results when analyzing the mesh efficiency using meshopt
-#[derive(Reflect, Default, Resource, InspectorOptions)]
-#[reflect(Resource, InspectorOptions)]
+#[derive(Reflect, Default, Resource)]
+#[reflect(Resource)]
+#[cfg_attr(feature = "fast-dev", derive(InspectorOptions))]
+#[cfg_attr(feature = "fast-dev", reflect(InspectorOptions))]
 pub struct MeshoptAnalysis {
     /// The number of vertices in the mesh
     pub vertex_count: usize,

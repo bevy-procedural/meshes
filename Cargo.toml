@@ -1,6 +1,6 @@
 [package]
-name = "procedural-meshes"
-description = "A procedural meshes system for the Bevy game engine."
+name = "bevy_procedural_meshes"
+description = "Procedural Meshes for the Bevy game engine."
 version = "0.1.0"
 edition = "2021"
 categories = ["graphics", "rendering", "game-development", "simulation"]
@@ -13,7 +13,7 @@ documentation = "https://docs.bevy-procedural.org/meshes"
 rust-version = "1.76.0"
 
 [lib]
-name = "procedural_meshes"
+name = "bevy_procedural_meshes"
 path = "src/lib.rs"
 crate-type = ["rlib"]
 

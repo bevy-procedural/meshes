@@ -1,6 +1,6 @@
 [package]
 name = "editor"
-description = "An Egui-based editor for the procedural-meshes crate"
+description = "An Egui-based editor for the bevy_procedural_meshes crate"
 edition = "2021"
 license = "MIT OR Apache-2.0"
 publish = false
@@ -10,7 +10,7 @@ bevy = { version = "0.13.0", features = ["file_watcher", "dynamic_linking"] }
 bevy-inspector-egui = "0.23.2"
 bevy_editor_pls = "0.8.0"
 
-[dependencies.procedural-meshes]
+[dependencies.bevy_procedural_meshes]
 path = "../"
 
 [lints]

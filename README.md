@@ -1,14 +1,14 @@
 # Bevy Procedural: Meshes
 
 <p align="center">
-  <a href="https://crates.io/crates/procedural-meshes">
-      <img src="https://img.shields.io/crates/v/procedural-meshes.svg" alt="crates.io">
+  <a href="https://crates.io/crates/bevy_procedural_meshes">
+      <img src="https://img.shields.io/crates/v/bevy_procedural_meshes.svg" alt="crates.io">
   </a>
   <a href="https://github.com/bevy-procedural/meshes/actions">
       <img src="https://github.com/bevy-procedural/meshes/actions/workflows/rust.yml/badge.svg" alt="Build Status">
   </a>
-  <a href="https://docs.rs/procedural-meshes">
-      <img src="https://docs.rs/procedural-meshes/badge.svg" alt="documentation">
+  <a href="https://docs.rs/bevy_procedural_meshes">
+      <img src="https://docs.rs/bevy_procedural_meshes/badge.svg" alt="documentation">
   </a>
    <a href="https://bevyengine.org/learn/book/plugin-development/#main-branch-tracking">
       <img src="https://img.shields.io/badge/Bevy%20tracking-1.3-lightblue" alt="crates.io">
@@ -17,11 +17,11 @@
 
 The objective of the [Bevy Procedural Project](https://bevy-procedural.org) is to furnish a comprehensive suite of packages for the generation of procedural graphics, unified by a consistent API.
 
-[Procedural Meshes](https://bevy-procedural.org/meshes) is a procedural mesh builder for bevy. It can use [Lyon](https://github.com/nical/lyon) to generate 2D shapes and extrude them into 3D meshes. It also supports (very!) simple methods for off-screen rendering and Constructive Solid Geometry.
+The [bevy_procedural_meshes](https://bevy-procedural.org/meshes)-crate is a procedural mesh builder for bevy. It can use [Lyon](https://github.com/nical/lyon) to generate 2D shapes and extrude them into 3D meshes. It also supports (very!) simple methods for off-screen rendering and Constructive Solid Geometry.
 
 Run the editor example using `cargo watch -w editor/src -w src -x "run -p editor"`.
 
-## WARNING: This repository is practically empty
+## WARNING
 
 The Bevy Procedural ecosystem is presently in its nascent phase. Expect frequent API modifications as it is under active development, with many features yet to be implemented. We highly encourage contributions to enrich the project!
 

@@ -8,7 +8,7 @@ use bevy::{
 };
 use bevy_editor_pls::prelude::*;
 use bevy_inspector_egui::{inspector_options::ReflectInspectorOptions, InspectorOptions};
-use procedural_meshes::fill::MyFill;
+use bevy_procedural_meshes::fill::MyFill;
 use std::{env, f32::consts::PI};
 
 pub fn main() {

@@ -6,5 +6,6 @@
 //! This crate provides a set of procedural mesh generation tools for Bevy.
 
 mod index_type;
-pub mod mesh;
+mod mesh;
 pub use index_type::IndexType;
+pub use mesh::*;

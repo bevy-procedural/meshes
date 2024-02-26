@@ -7,8 +7,7 @@ use bevy::{
     prelude::*,
     render::render_asset::RenderAssetUsages,
 };
-use bevy_procedural_meshes::mesh::PMesh;
-use lyon::path::Winding;
+use bevy_procedural_meshes::*;
 
 fn main() {
     App::new()

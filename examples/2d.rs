@@ -5,8 +5,7 @@ use bevy::{
     render::render_asset::RenderAssetUsages,
     sprite::{MaterialMesh2dBundle, Mesh2dHandle},
 };
-use bevy_procedural_meshes::mesh::PMesh;
-use lyon::path::Winding;
+use bevy_procedural_meshes::*;
 
 fn main() {
     App::new()

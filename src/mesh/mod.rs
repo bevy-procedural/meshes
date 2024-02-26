@@ -17,6 +17,9 @@ pub mod meshopt;
 #[cfg(feature = "lyon")]
 pub mod lyon;
 
+#[cfg(feature = "lyon")]
+pub use lyon::Winding;
+
 /// A mesh with vertices, indices, uv coordinates and normals.
 #[derive(Clone, Debug)]
 pub struct PMesh<T>

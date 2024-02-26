@@ -14,11 +14,7 @@ use bevy_inspector_egui::{
     InspectorOptions,
 };
 use bevy_panorbit_camera::*;
-use bevy_procedural_meshes::mesh::{
-    lyon::Winding,
-    meshopt::{MeshoptAnalysis, MeshoptSettings},
-    PMesh,
-};
+use bevy_procedural_meshes::{meshopt::{MeshoptAnalysis, MeshoptSettings}, *};
 use std::{env, f32::consts::PI};
 
 #[derive(Reflect, Resource, InspectorOptions)]
@@ -146,7 +142,8 @@ fn update_meshes(
 
     settings.analysis = mesh.meshopt_analyse();
 
-    mesh.flip_yz().bevy_set(assets.get_mut(query.single().id()).unwrap());
+    mesh.flip_yz()
+        .bevy_set(assets.get_mut(query.single().id()).unwrap());
 }
 
 fn setup_meshes(

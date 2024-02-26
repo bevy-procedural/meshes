@@ -1,13 +1,11 @@
 use bevy::{
-    diagnostic::{
-        EntityCountDiagnosticsPlugin, FrameTimeDiagnosticsPlugin,
-        SystemInformationDiagnosticsPlugin,
-    },
-    pbr::CascadeShadowConfigBuilder,
-    prelude::*, window::WindowResolution,
+    diagnostic::FrameTimeDiagnosticsPlugin, pbr::CascadeShadowConfigBuilder, prelude::*,
+    window::WindowResolution,
 };
-use bevy_editor_pls::prelude::*;
-use bevy_inspector_egui::{inspector_options::ReflectInspectorOptions, InspectorOptions};
+use bevy_inspector_egui::{
+    inspector_options::ReflectInspectorOptions, quick::FilterQueryInspectorPlugin, InspectorOptions,
+};
+use bevy_panorbit_camera::*;
 use bevy_procedural_meshes::fill::MyFill;
 use std::{env, f32::consts::PI};
 
@@ -26,10 +24,8 @@ pub fn main() {
         }))
         .register_type::<MeshSettings>()
         .add_plugins((
-            EditorPlugin::default(),
-            FrameTimeDiagnosticsPlugin,
-            EntityCountDiagnosticsPlugin,
-            SystemInformationDiagnosticsPlugin::default(),
+            FilterQueryInspectorPlugin::<With<MeshSettings>>::default(),
+            FrameTimeDiagnosticsPlugin,        PanOrbitCameraPlugin,
         ))
         .add_systems(Update, bevy::window::close_on_esc)
         .add_systems(Startup, setup_meshes)
@@ -132,8 +128,9 @@ pub fn setup_meshes(
         ..Default::default()
     });
 
-    commands.spawn(Camera3dBundle {
+    commands.spawn((Camera3dBundle {
         transform: Transform::from_xyz(2.0, 3.0, 2.0).looking_at(Vec3::ZERO, Vec3::Y),
         ..default()
-    });
+    },
+    PanOrbitCamera::default(),));
 }

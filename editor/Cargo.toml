@@ -8,7 +8,7 @@ publish = false
 [dependencies]
 bevy = { version = "0.13.0", features = ["file_watcher", "dynamic_linking"] }
 bevy-inspector-egui = "0.23.2"
-bevy_editor_pls = "0.8.0"
+bevy_panorbit_camera = { version = "0.15.0", features = ["bevy_egui"] }
 
 [dependencies.bevy_procedural_meshes]
 path = "../"

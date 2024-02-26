@@ -3,7 +3,7 @@ use super::super::PMesh;
 use lyon::{
     lyon_tessellation::geometry_builder::simple_builder,
     math::Point,
-    tessellation::{FillOptions, FillTessellator, VertexBuffers},
+    tessellation::{FillBuilder, FillOptions, FillTessellator, VertexBuffers},
 };
 
 // TODO: allow other index sizes!
@@ -33,7 +33,7 @@ impl PFill {
     /// Draws the path using the given closure.
     pub fn draw<F>(&mut self, draw_commands: F) -> &mut Self
     where
-        F: FnOnce(&mut PBuilder),
+        F: FnOnce(&mut PBuilder<FillBuilder>),
     {
         let mut geometry_builder = simple_builder(&mut self.geometry);
         let builder = self

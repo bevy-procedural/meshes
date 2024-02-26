@@ -52,7 +52,7 @@ memoffset = "0.9.0"
 meshopt = { version = "0.2.0", optional = true }
 
 [features]
-default = ["lyon", "meshopt"]
+default = ["lyon"]
 fast-dev = ["bevy/dynamic_linking", "bevy-inspector-egui"]
 meshopt = ["dep:meshopt"]
 lyon = ["dep:lyon"]

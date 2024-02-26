@@ -1,4 +1,5 @@
 use super::super::PMesh;
+use super::PBuilder;
 use lyon::lyon_tessellation::geometry_builder::simple_builder;
 use lyon::math::Point;
 use lyon::path::builder::NoAttributes;
@@ -31,16 +32,17 @@ impl PStroke {
     /// Draws the path using the given closure.
     pub fn draw<F>(&mut self, draw_commands: F) -> &mut Self
     where
-        F: FnOnce(&mut NoAttributes<StrokeBuilder>),
+        F: FnOnce(&mut PBuilder<StrokeBuilder>),
     {
         let mut geometry_builder = simple_builder(&mut self.geometry);
-        let mut builder = self
+        let builder = self
             .tessellator
             .builder(&self.options, &mut geometry_builder);
 
-        draw_commands(&mut builder);
+        let mut my_builder = PBuilder::new(builder);
+        draw_commands(&mut my_builder);
 
-        builder.build().unwrap();
+        my_builder.build().unwrap();
 
         self
     }

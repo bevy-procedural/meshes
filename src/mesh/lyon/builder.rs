@@ -1,12 +1,19 @@
 use bevy::math::{Affine2, Vec2};
 use lyon::{
-    path::{builder::NoAttributes, traits::Build, Winding},
+    path::{
+        builder::NoAttributes,
+        traits::{Build, PathBuilder},
+        Winding,
+    },
     tessellation::FillBuilder,
 };
 
 /// This structure wraps a `lyon::tesselation::FillBuilder` and adds functionality to apply transformations to the path being built.
-pub struct PBuilder<'a> {
-    builder: NoAttributes<FillBuilder<'a>>,
+pub struct PBuilder<T>
+where
+    T: PathBuilder,
+{
+    builder: NoAttributes<T>,
     transform: Affine2,
     stack: Vec<Affine2>,
 }
@@ -21,9 +28,12 @@ fn vec2v(v: Vec2) -> lyon::math::Vector {
     lyon::math::Vector::new(v.x, v.y)
 }
 
-impl<'a> PBuilder<'a> {
+impl<T> PBuilder<T>
+where
+    T: PathBuilder,
+{
     /// Creates a new builder with the given fill builder.
-    pub fn new(builder: NoAttributes<FillBuilder<'a>>) -> Self {
+    pub fn new(builder: NoAttributes<T>) -> Self {
         PBuilder {
             builder,
             transform: Affine2::IDENTITY,
@@ -128,7 +138,7 @@ impl<'a> PBuilder<'a> {
     #[inline]
     pub fn build<P>(self) -> P
     where
-        FillBuilder<'a>: Build<PathType = P>,
+        T: Build<PathType = P>,
     {
         self.builder.build()
     }

@@ -3,7 +3,7 @@ use bevy::{
     window::WindowResolution,
 };
 use bevy_inspector_egui::{
-    inspector_options::ReflectInspectorOptions, quick::FilterQueryInspectorPlugin, InspectorOptions,
+    inspector_options::ReflectInspectorOptions, quick::{FilterQueryInspectorPlugin, WorldInspectorPlugin}, InspectorOptions,
 };
 use bevy_panorbit_camera::*;
 use bevy_procedural_meshes::fill::MyFill;
@@ -25,7 +25,9 @@ pub fn main() {
         .register_type::<MeshSettings>()
         .add_plugins((
             FilterQueryInspectorPlugin::<With<MeshSettings>>::default(),
-            FrameTimeDiagnosticsPlugin,        PanOrbitCameraPlugin,
+            WorldInspectorPlugin::default(),
+            FrameTimeDiagnosticsPlugin,
+            PanOrbitCameraPlugin,
         ))
         .add_systems(Update, bevy::window::close_on_esc)
         .add_systems(Startup, setup_meshes)
@@ -128,9 +130,11 @@ pub fn setup_meshes(
         ..Default::default()
     });
 
-    commands.spawn((Camera3dBundle {
-        transform: Transform::from_xyz(2.0, 3.0, 2.0).looking_at(Vec3::ZERO, Vec3::Y),
-        ..default()
-    },
-    PanOrbitCamera::default(),));
+    commands.spawn((
+        Camera3dBundle {
+            transform: Transform::from_xyz(2.0, 3.0, 2.0).looking_at(Vec3::ZERO, Vec3::Y),
+            ..default()
+        },
+        PanOrbitCamera::default(),
+    ));
 }

@@ -15,15 +15,15 @@
   </a>
 </p>
 
-The objective of the [Bevy Procedural Project](https://bevy-procedural.org) is to furnish a comprehensive suite of packages for the generation of procedural graphics, unified by a consistent API.
+The objective of the [Bevy Procedural Project](https://bevy-procedural.org) is to provide a comprehensive suite of packages for the generation of procedural graphics, unified by a consistent API.
 
 The [bevy_procedural_meshes](https://bevy-procedural.org/meshes)-crate is a procedural mesh builder for bevy. It can use [Lyon](https://github.com/nical/lyon) to generate 2D shapes and extrude them into 3D meshes. It also supports (very!) simple methods for off-screen rendering and Constructive Solid Geometry.
 
-Run the editor example using `cargo watch -w editor/src -w src -x "run -p editor"`.
+Run the editor example using `cargo watch -w editor/src -w src -x "run -p editor --profile fast-dev"`.
 
 ## WARNING
 
-The Bevy Procedural ecosystem is presently in its nascent phase. Expect frequent API modifications as it is under active development, with many features yet to be implemented. We highly encourage contributions to enrich the project!
+This crate is still in a _very_ early stage of development. Expect frequent API modifications, bugs, and missing features. Feel free to contribute by opening issues, pull requests or sharing your ideas in [Github Discussion](https://github.com/bevy-procedural/meshes/discussions) or the [Bevy Discord](https://discord.gg/bevy).
 
 ## License
 

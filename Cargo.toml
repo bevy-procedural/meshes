@@ -42,9 +42,16 @@ unsafe_op_in_unsafe_fn = "warn"
 workspace = true
 
 [dependencies]
-bevy = { version = "0.13.0", features = ["dynamic_linking"] }
-bevy-inspector-egui = "0.23.2"
+bevy = { version = "0.13.0", default-features = false, features = [
+    "bevy_asset",
+    "bevy_core_pipeline"
+] }
+bevy-inspector-egui = { version = "0.23.2", optional = true }
 lyon = "1.0.1"
+
+[features]
+default = []
+fast-dev = ["bevy/dynamic_linking", "bevy-inspector-egui"]
 
 [[example]]
 name = "simple"
@@ -57,13 +64,16 @@ doc-scrape-examples = true
 #debug = 1
 
 # Enable a small amount of optimization in debug mode
-[profile.dev]
+[profile.fast-dev]
+inherits = "dev"
 opt-level = 1
 
 # Enable high optimizations for dependencies (incl. Bevy), but not for our code:
-[profile.dev.package."*"]
+[profile.fast-dev.package."*"]
+inherits = "dev"
 opt-level = 3
 
-[profile.dev.package.gfx-backend-vulkan]
+[profile.fast-dev.package.gfx-backend-vulkan]
+inherits = "dev"
 opt-level = 3
 debug-assertions = false

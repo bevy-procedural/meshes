@@ -5,7 +5,7 @@ use lyon::path::{
     Winding,
 };
 
-/// This structure wraps a `lyon::tesselation::FillBuilder` and adds functionality to apply transformations to the path being built.
+/// This structure wraps a `lyon::tesselation::PathBuilder` and adds functionality to apply transformations to the path being built.
 pub struct PBuilder<T>
 where
     T: PathBuilder,

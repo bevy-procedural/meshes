@@ -1,7 +1,7 @@
 //! This module contains the bevy-specific backend for the procedural mesh generation.
 
 use super::IndexType;
-use bevy::{prelude::*, render::render_resource::PrimitiveTopology};
+use bevy::prelude::*;
 mod indices;
 mod vertices;
 pub use indices::PIndices;
@@ -20,7 +20,11 @@ pub mod lyon;
 #[cfg(feature = "lyon")]
 pub use lyon::Winding;
 
-/// A mesh with vertices, indices, uv coordinates and normals.
+/// A mesh with vertices, indices of type T, uv coordinates and normals.
+///
+/// It will always use a triangle list topology, because on most hardware,
+/// indexed triangle lists are more efficient than triangle strips (see meshopt-rs).
+/// Lines and Points are not supported (use "stroke" and "circle" instead).
 #[derive(Clone, Debug)]
 pub struct PMesh<T>
 where
@@ -31,19 +35,6 @@ where
     indices: PIndices<T>,
     uv: Option<Vec<[f32; 2]>>,
     normals: Option<Vec<[f32; 3]>>,
-
-    /// ### From meshopt-rs:
-    ///
-    /// On most hardware, indexed triangle lists are the most efficient way to drive the GPU.
-    /// However, in some cases triangle strips might prove beneficial:
-    ///
-    ///  - On some older GPUs, triangle strips may be a bit more efficient to render
-    ///  - On extremely memory constrained systems, index buffers for triangle strips could save a bit of memory
-    ///
-    /// \[...\] Typically you should expect triangle strips to have ca. 50-60% of indices compared to triangle lists
-    /// (ca. 1.5-1.8 indices per triangle) and have ca. 5% worse ACMR. Note that triangle strips require restart
-    /// index support for rendering; using degenerate triangles to connect strips is not supported.
-    topology: PrimitiveTopology,
 }
 
 impl<T> Default for PMesh<T>
@@ -67,7 +58,6 @@ where
             indices: PIndices::<T>::new(),
             uv: Some(Vec::new()),
             normals: None,
-            topology: PrimitiveTopology::TriangleList,
         }
     }
 
@@ -111,7 +101,6 @@ where
         indices: Vec<T>,
         uv: Option<Vec<[f32; 2]>>,
         normals: Option<Vec<[f32; 3]>>,
-        topology: PrimitiveTopology,
     ) -> Self {
         if let Some(uv) = &uv {
             assert!(vertices.len() == uv.len());
@@ -124,7 +113,6 @@ where
             indices: PIndices::build(indices),
             uv,
             normals,
-            topology,
         }
     }
 
@@ -135,23 +123,15 @@ where
             indices.iter().map(|i| T::new(*i as usize)).collect(),
             uv,
             None,
-            PrimitiveTopology::TriangleList,
         )
     }
 
     /// Appends another mesh to this one.
     pub fn extend(&mut self, m: &PMesh<T>) -> &mut PMesh<T> {
-        // convert topology if necessary
-        let mut indices = if m.topology != self.topology {
-            m.clone().set_topology(self.topology).indices.clone()
-        } else {
-            m.indices.clone()
-        };
-
         let offset = self.vertices.len();
         self.vertices.extend(&m.vertices);
         self.indices
-            .extend(indices.map(|i: T| i.add(T::new(offset))));
+            .extend(m.clone().indices.map(|i: T| i.add(T::new(offset))));
         if let Some(uv) = &mut self.uv {
             if let Some(uv2) = &m.uv {
                 uv.extend(uv2);
@@ -184,25 +164,6 @@ where
     /// Scales the mesh uniformly.
     pub fn scale_uniform(&mut self, x: f32) -> &mut PMesh<T> {
         self.vertices.scale(x, x, x);
-        self
-    }
-
-    /// Convert the mesh to a different topology by adjusting the indices.
-    pub fn set_topology(&mut self, topology: PrimitiveTopology) -> &mut PMesh<T> {
-        if topology != self.topology {
-            if self.topology == PrimitiveTopology::TriangleList
-                && topology == PrimitiveTopology::TriangleStrip
-            {
-                self.indices = self.indices.triangle_list_to_triangle_strip();
-            } else if self.topology == PrimitiveTopology::TriangleStrip
-                && topology == PrimitiveTopology::TriangleList
-            {
-                self.indices = self.indices.triangle_strip_to_triangle_list();
-            } else {
-                panic!("Topology change not implemented yet");
-            }
-            self.topology = topology;
-        }
         self
     }
 

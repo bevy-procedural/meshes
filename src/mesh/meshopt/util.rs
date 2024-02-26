@@ -1,5 +1,4 @@
 use super::super::{indices::PIndices, vertices::PVertices, IndexType, PMesh};
-use bevy::render::mesh::PrimitiveTopology;
 use memoffset::offset_of;
 use meshopt::{typed_to_bytes, VertexDataAdapter};
 
@@ -23,11 +22,6 @@ where
 {
     /// Converts the mesh into meshopt data.
     pub fn to_meshopt_data(&self) -> MeshoptMesh {
-        assert!(
-            self.topology == PrimitiveTopology::TriangleList,
-            "requires triangle list topology"
-        );
-
         let mut vertices = Vec::new();
         for i in 0..self.vertices.len() {
             vertices.push(meshopt::Vertex {
@@ -53,11 +47,6 @@ where
 
     /// Imports the meshopt data into the mesh.
     pub fn import_meshopt_data(&mut self, mesh: &MeshoptMesh) {
-        assert!(
-            self.topology == PrimitiveTopology::TriangleList,
-            "requires triangle list topology"
-        );
-
         self.vertices = PVertices::build(
             mesh.vertices
                 .iter()
@@ -65,7 +54,6 @@ where
                 .collect(),
         );
         self.indices = PIndices::build(mesh.indices.iter().map(|x| T::new(*x as usize)).collect());
-
         self.normals = None;
         self.uv = None;
     }

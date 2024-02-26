@@ -1,5 +1,5 @@
 use super::{IndexType, PMesh};
-use bevy::{prelude::*, render::mesh::PrimitiveTopology};
+use bevy::prelude::*;
 
 impl<T> PMesh<T>
 where
@@ -11,13 +11,9 @@ where
             self.indices.len() == self.vertices.len(),
             "requires duplicated vertices"
         );
-        assert!(
-            self.topology == PrimitiveTopology::TriangleList,
-            "requires triangle list topology"
-        );
 
         self.normals = Some(
-            self.iter_faces_list()
+            self.iter_faces()
                 .map(|[v1, v2, v3]| {
                     (self.vec3_at(v2) - self.vec3_at(v1))
                         .cross(self.vec3_at(v3) - self.vec3_at(v1))
@@ -38,7 +34,7 @@ where
         // TODO: this looks a bit buggy on screen. Not sure whether it's a problem with the normals or the normal interpolation/color grading in the shader.
 
         let mut normals = vec![Vec3::ZERO; self.vertices.len()];
-        for [f1, f2, f3] in self.iter_faces_list() {
+        for [f1, f2, f3] in self.iter_faces() {
             let v1 = self.vec3_at(f1);
             let v2 = self.vec3_at(f2);
             let v3 = self.vec3_at(f3);

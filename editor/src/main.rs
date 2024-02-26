@@ -14,7 +14,10 @@ use bevy_inspector_egui::{
     InspectorOptions,
 };
 use bevy_panorbit_camera::*;
-use bevy_procedural_meshes::{meshopt::{MeshoptAnalysis, MeshoptSettings}, *};
+use bevy_procedural_meshes::{
+    meshopt::{MeshoptAnalysis, MeshoptSettings},
+    *,
+};
 use std::{env, f32::consts::PI};
 
 #[derive(Reflect, Resource, InspectorOptions)]
@@ -117,8 +120,8 @@ fn update_meshes(
 ) {
     let angle = std::f32::consts::PI / settings.points as f32;
 
-    let mut mesh = PMesh::<u16>::hexagon(1.0);
-    mesh.fill(0.01, |builder| {
+    let mut mesh = PMesh::<u16>::polygon(1.0, 6);
+    mesh.fill(2.0f32.powf(settings.tol), |builder| {
         builder.push().begin(Vec2::new(settings.inner_radius, 0.0));
         for _ in 0..settings.points {
             builder

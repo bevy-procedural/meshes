@@ -16,12 +16,10 @@ where
     pub fn bevy_set(&self, mesh: &mut Mesh) {
         assert!(self.indices.iter_usize().all(|i| i < self.vertices.len()));
 
-        // adjust topology if necessary
-        let indices = if mesh.primitive_topology() != self.topology {
-            self.clone().set_topology(self.topology).indices.clone()
-        } else {
-            self.indices.clone()
-        };
+        assert!(
+            mesh.primitive_topology() == PrimitiveTopology::TriangleList,
+            "Only triangle lists are supported"
+        );
 
         mesh.remove_indices();
         let mut attributes_to_remove = Vec::new();
@@ -32,7 +30,7 @@ where
             mesh.remove_attribute(attr);
         }
 
-        mesh.insert_indices(indices.get_bevy());
+        mesh.insert_indices(self.indices.get_bevy());
         mesh.insert_attribute(Mesh::ATTRIBUTE_POSITION, self.vertices.to_bevy());
         if let Some(uv) = &self.uv {
             assert!(self.vertices.len() == uv.len());
@@ -64,7 +62,7 @@ where
 
     /// Creates a bevy mesh from the mesh.
     pub fn to_bevy(&self, usage: RenderAssetUsages) -> Mesh {
-        let mut mesh = Mesh::new(self.topology, usage);
+        let mut mesh = Mesh::new(PrimitiveTopology::TriangleList, usage);
         self.bevy_set(&mut mesh);
         mesh
     }

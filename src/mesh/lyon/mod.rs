@@ -1,7 +1,6 @@
 //! This module contains the implementation of the lyon mesh import functions.
 
 use super::{IndexType, PMesh};
-use bevy::render::mesh::PrimitiveTopology;
 use lyon::{lyon_tessellation::VertexBuffers, math::Point};
 mod builder;
 mod fill;
@@ -39,7 +38,7 @@ where
                 .map(|v| [v.x / uv_x_scale, v.y / uv_y_scale])
                 .collect(),
         );
-        PMesh::build_ex(vertices, indices, uv, None, PrimitiveTopology::TriangleList)
+        PMesh::build_ex(vertices, indices, uv, None)
     }
 }
 

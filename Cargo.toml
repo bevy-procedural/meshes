@@ -1,15 +1,15 @@
 [package]
 name = "bevy_procedural_meshes"
 description = "Procedural Meshes for the Bevy game engine."
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
-categories = ["graphics", "rendering", "game-development", "simulation"]
+categories = ["graphics", "rendering", "game-development"]
 keywords = ["gamedev", "graphics", "bevy", "procedural", "meshes"]
 homepage = "https://bevy-procedural.org/meshes"
 license = "MIT OR Apache-2.0"
 readme = "README.md"
 repository = "https://github.com/bevy-procedural/meshes"
-documentation = "https://docs.bevy-procedural.org/meshes"
+documentation = "https://docs.rs/bevy_procedural_meshes"
 rust-version = "1.76.0"
 
 [lib]

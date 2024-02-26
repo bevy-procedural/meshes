@@ -8,34 +8,19 @@ mod fill;
 mod stroke;
 pub use builder::PBuilder;
 pub use fill::PFill;
-pub use stroke::PStroke;
 pub use lyon::path::Winding;
-
+pub use stroke::PStroke;
 
 impl<T> PMesh<T>
 where
     T: IndexType,
 {
     /// Imports a mesh from a lyon VertexBuffers.
-    pub fn import_geometry(
-        geometry: &VertexBuffers<Point, T>,
-        flat: bool,
-        normalize_uv: bool,
-    ) -> PMesh<T>
+    pub fn import_geometry(geometry: &VertexBuffers<Point, T>, normalize_uv: bool) -> PMesh<T>
     where
         T: IndexType,
     {
-        let vertices: Vec<[f32; 3]> = geometry
-            .vertices
-            .iter()
-            .map(|v| {
-                if flat {
-                    [v.x, 0.0, v.y]
-                } else {
-                    [-v.x, v.y, 0.0]
-                }
-            })
-            .collect();
+        let vertices: Vec<[f32; 3]> = geometry.vertices.iter().map(|v| [v.x, v.y, 0.0]).collect();
         let indices = geometry.indices.clone().iter().cloned().collect();
 
         let mut uv_x_scale = 1.0;

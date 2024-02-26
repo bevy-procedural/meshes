@@ -195,4 +195,14 @@ impl PVertices {
     pub fn to_bevy(&self) -> VertexAttributeValues {
         VertexAttributeValues::Float32x3(self.vertices.clone())
     }
+
+    /// Flips the y and z coordinates of the vertices.
+    pub fn flip_yz(&mut self) -> &mut PVertices {
+        for v in &mut self.vertices {
+            let y = v[1];
+            v[1] = v[2];
+            v[2] = y;
+        }
+        self
+    }
 }

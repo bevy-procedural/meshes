@@ -7,7 +7,7 @@ use bevy::{
     prelude::*,
     render::render_asset::RenderAssetUsages,
 };
-use bevy_procedural_meshes::mesh::{lyon::PFill, PMesh};
+use bevy_procedural_meshes::mesh::PMesh;
 use lyon::path::Winding;
 
 fn main() {
@@ -66,8 +66,8 @@ fn update(
     let points = 5;
     let angle = std::f32::consts::PI / points as f32;
 
-    let mut fill = PFill::new(0.01);
-    fill.draw(|builder| {
+    let mut mesh = PMesh::<u32>::new();
+    mesh.fill(0.1, |builder| {
         builder.push().begin(Vec2::new(inner_radius, 0.0));
         for _ in 0..points {
             builder
@@ -99,6 +99,6 @@ fn update(
     // TODO: Extrude the whole shape! However, sorting the vertices is not sufficient for complex shapes.
     // fill.build::<u16>(false).get_vertices_mut().sort_clockwise().extrude(Vec3::Z);
 
-    fill.build::<u16>(true)
+    mesh.flip_yz()
         .bevy_set(assets.get_mut(query.single().id()).unwrap());
 }

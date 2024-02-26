@@ -1,11 +1,8 @@
 use bevy::math::{Affine2, Vec2};
-use lyon::{
-    path::{
-        builder::NoAttributes,
-        traits::{Build, PathBuilder},
-        Winding,
-    },
-    tessellation::FillBuilder,
+use lyon::path::{
+    builder::NoAttributes,
+    traits::{Build, PathBuilder},
+    Winding,
 };
 
 /// This structure wraps a `lyon::tesselation::FillBuilder` and adds functionality to apply transformations to the path being built.

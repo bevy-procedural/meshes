@@ -61,7 +61,7 @@ lyon = ["dep:lyon"]
 name = "2d"
 path = "examples/2d.rs"
 doc-scrape-examples = true
-required-features = ["bevy/bevy_winit", "bevy/bevy_sprite"]
+required-features = ["bevy/bevy_winit", "bevy/bevy_sprite", "lyon"]
 
 [[example]]
 name = "3d"
@@ -71,6 +71,7 @@ required-features = [
     "bevy/bevy_winit",
     "bevy/bevy_pbr",
     "bevy/tonemapping_luts",
+    "lyon",
 ]
 
 # Enable a small amount of optimization in debug mode
@@ -82,11 +83,6 @@ opt-level = 1
 [profile.fast-dev.package."*"]
 inherits = "dev"
 opt-level = 3
-
-[profile.fast-dev.package.gfx-backend-vulkan]
-inherits = "dev"
-opt-level = 3
-debug-assertions = false
 
 [profile.wasm-release]
 inherits = "release"

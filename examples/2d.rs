@@ -5,7 +5,7 @@ use bevy::{
     render::render_asset::RenderAssetUsages,
     sprite::{MaterialMesh2dBundle, Mesh2dHandle},
 };
-use bevy_procedural_meshes::mesh::{lyon::PFill, PMesh};
+use bevy_procedural_meshes::mesh::PMesh;
 use lyon::path::Winding;
 
 fn main() {
@@ -42,8 +42,8 @@ fn update(
     let points = 5;
     let angle = std::f32::consts::PI / points as f32;
 
-    let mut fill = PFill::new(0.1);
-    fill.draw(|builder| {
+    let mut mesh = PMesh::<u32>::new();
+    mesh.fill(0.1, |builder| {
         builder.push().begin(Vec2::new(inner_radius, 0.0));
         for _ in 0..points {
             builder
@@ -61,12 +61,11 @@ fn update(
             .and_then(|cursor| camera.viewport_to_world_2d(camera_transform, cursor))
         {
             builder.add_circle(
-                Vec2::new(-world_position.x, world_position.y),
+                Vec2::new(world_position.x, world_position.y),
                 100.0,
                 Winding::Positive,
             );
         }
     });
-    fill.build::<u16>(false)
-        .bevy_set(assets.get_mut(query.single().0.id()).unwrap());
+    mesh.bevy_set(assets.get_mut(query.single().0.id()).unwrap());
 }

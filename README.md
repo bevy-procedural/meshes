@@ -42,18 +42,17 @@ fn setup(
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-    let mut fill = PFill::new(0.01);
-    fill.draw(|builder| {
+    let mut mesh = PMesh::<u32>::new();
+    mesh.fill(0.01, |builder| {
         builder
             .begin_here()
             .quadratic_bezier_to(Vec2::new(3.0, 3.0), Vec2::new(1.5, 3.0))
             .quadratic_bezier_to(Vec2::new(0.0, 3.0), Vec2::new(0.0, 0.0))
             .close();
     });
-    let bevy_mesh = fill.build::<u16>(false).to_bevy(RenderAssetUsages::default());
     
     commands.spawn(PbrBundle {
-        mesh: meshes.add(bevy_mesh),
+        mesh: meshes.add(mesh.to_bevy(RenderAssetUsages::all())),
         material: materials.add(StandardMaterial::default()),
         ..default()
     });

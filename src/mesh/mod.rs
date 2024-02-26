@@ -249,4 +249,12 @@ where
         self.indices.add_backfaces();
         self
     }
+
+    /// Flips the y and z coordinates of the vertices.
+    ///
+    /// This is useful to place a mesh "lying on the ground" in a 3D scene.
+    pub fn flip_yz(&mut self) -> &mut PMesh<T> {
+        self.vertices.flip_yz();
+        self
+    }
 }

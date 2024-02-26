@@ -1,7 +1,7 @@
 [package]
 name = "bevy_procedural_meshes"
 description = "Procedural Meshes for the Bevy game engine."
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 categories = ["graphics", "rendering", "game-development", "simulation"]
 keywords = ["gamedev", "graphics", "bevy", "procedural", "meshes"]
@@ -44,7 +44,7 @@ workspace = true
 [dependencies]
 bevy = { version = "0.13.0", default-features = false, features = [
     "bevy_asset",
-    "bevy_core_pipeline"
+    "bevy_core_pipeline",
 ] }
 bevy-inspector-egui = { version = "0.23.2", optional = true }
 lyon = "1.0.1"
@@ -54,10 +54,16 @@ default = []
 fast-dev = ["bevy/dynamic_linking", "bevy-inspector-egui"]
 
 [[example]]
-name = "simple"
-path = "examples/simple.rs"
+name = "2d"
+path = "examples/2d.rs"
 doc-scrape-examples = true
-required-features = ["bevy/bevy_sprite", "bevy/bevy_winit"]
+required-features = ["bevy/bevy_winit", "bevy/bevy_sprite"]
+
+[[example]]
+name = "3d"
+path = "examples/3d.rs"
+doc-scrape-examples = true
+required-features = ["bevy/bevy_winit", "bevy/bevy_pbr", "bevy/tonemapping_luts"]
 
 
 # Optional: Uncommenting the following improves compile times, but reduces the amount of debug info to 'line number tables only'

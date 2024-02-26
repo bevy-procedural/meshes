@@ -30,7 +30,12 @@ fn setup(
     });
 }
 
-fn update(query: Query<&Mesh2dHandle>, mut assets: ResMut<Assets<Mesh>>, windows: Query<&Window>) {
+fn update(
+    query: Query<&Mesh2dHandle>,
+    mut assets: ResMut<Assets<Mesh>>,
+    windows: Query<&Window>,
+    camera_q: Query<(&Camera, &GlobalTransform)>,
+) {
     let inner_radius = 100.0;
     let outer_radius = 200.0;
     let points = 5;
@@ -49,12 +54,13 @@ fn update(query: Query<&Mesh2dHandle>, mut assets: ResMut<Assets<Mesh>>, windows
         builder.close_pop();
 
         let window = windows.single();
-        if let Some(world_position) = window.cursor_position() {
+        let (camera, camera_transform) = camera_q.single();
+        if let Some(world_position) = window
+            .cursor_position()
+            .and_then(|cursor| camera.viewport_to_world_2d(camera_transform, cursor))
+        {
             builder.add_circle(
-                Vec2::new(
-                    -world_position.x + window.width() / 2.0,
-                    -world_position.y + window.height() / 2.0,
-                ),
+                Vec2::new(-world_position.x, world_position.y),
                 100.0,
                 Winding::Positive,
             );

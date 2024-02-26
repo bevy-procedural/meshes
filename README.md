@@ -19,7 +19,7 @@ The objective of the [Bevy Procedural Project](https://bevy-procedural.org) is t
 
 The [bevy_procedural_meshes](https://bevy-procedural.org/meshes)-crate is a procedural mesh builder for bevy. It can use [Lyon](https://github.com/nical/lyon) to generate 2D shapes and extrude them into 3D meshes. It also supports (very!) simple methods for off-screen rendering and Constructive Solid Geometry.
 
-Run the editor example using `cargo watch -w editor/src -w src -x "run -p editor --profile fast-dev"`.
+Run the editable development version using `cargo watch -w editor/src -w src -x "run -p editor --profile fast-dev"` or run exampes like `cargo run --example simple --features="bevy/bevy_sprite bevy/bevy_winit"`.
 
 ## WARNING
 

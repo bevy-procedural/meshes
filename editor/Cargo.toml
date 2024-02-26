@@ -6,16 +6,13 @@ license = "MIT OR Apache-2.0"
 publish = false
 
 [dependencies]
-bevy = { version = "0.13.0", features = ["file_watcher", "dynamic_linking"] }
+bevy = { version = "0.13.0", features = ["file_watcher", "bevy_sprite"] }
 bevy-inspector-egui = "0.23.2"
 bevy_panorbit_camera = { version = "0.15.0", features = ["bevy_egui"] }
 
 [dependencies.bevy_procedural_meshes]
 path = "../"
 features = ["fast-dev"]
-
-[lints]
-workspace = true
 
 [package.metadata]
 hot_reload_features = ["bevy/dynamic_linking", "bevy/embedded_watcher"]

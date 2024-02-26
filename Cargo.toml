@@ -36,7 +36,7 @@ ref_as_ptr = "warn"
 
 [workspace.lints.rust]
 unsafe_op_in_unsafe_fn = "warn"
-# missing_docs = "warn"
+missing_docs = "warn"
 
 [lints]
 workspace = true
@@ -57,6 +57,8 @@ fast-dev = ["bevy/dynamic_linking", "bevy-inspector-egui"]
 name = "simple"
 path = "examples/simple.rs"
 doc-scrape-examples = true
+required-features = ["bevy/bevy_sprite", "bevy/bevy_winit"]
+
 
 # Optional: Uncommenting the following improves compile times, but reduces the amount of debug info to 'line number tables only'
 # In most cases the gains are negligible, but if you are on macos and have slow compile times you should see significant gains.

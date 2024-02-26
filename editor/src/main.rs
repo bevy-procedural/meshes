@@ -1,12 +1,13 @@
 use bevy::{
-    diagnostic::FrameTimeDiagnosticsPlugin, pbr::CascadeShadowConfigBuilder, prelude::*,
-    window::WindowResolution,
+    diagnostic::FrameTimeDiagnosticsPlugin, pbr::CascadeShadowConfigBuilder, prelude::*, render::render_asset::RenderAssetUsages, sprite::MaterialMesh2dBundle, window::WindowResolution
 };
 use bevy_inspector_egui::{
-    inspector_options::ReflectInspectorOptions, quick::{FilterQueryInspectorPlugin, WorldInspectorPlugin}, InspectorOptions,
+    inspector_options::ReflectInspectorOptions,
+    quick::{FilterQueryInspectorPlugin, WorldInspectorPlugin},
+    InspectorOptions,
 };
 use bevy_panorbit_camera::*;
-use bevy_procedural_meshes::fill::MyFill;
+use bevy_procedural_meshes::*;
 use std::{env, f32::consts::PI};
 
 pub fn main() {
@@ -61,19 +62,19 @@ pub fn update_meshes(
 ) {
     for (handle, mut settings) in query.iter_mut() {
         if let Some(mesh) = assets.get_mut(handle.id()) {
-            let mut fill = MyFill::new(2.0f32.powf(settings.tol));
+            let mut fill = PFill::new(2.0f32.powf(settings.tol));
             fill.draw(|builder| {
                 builder.begin(Vec2::new(3.0, 0.0));
                 builder.quadratic_bezier_to(Vec2::new(3.0, 3.0), Vec2::new(1.5, 3.0));
                 builder.quadratic_bezier_to(Vec2::new(0.0, 3.0), Vec2::new(0.0, 0.0));
                 builder.end(true);
             });
-            let my_mesh = fill
-                .build(false)
-                .vertices
+            let my_mesh: PMesh<u16> = fill
+                .build::<u16>(false)
+                .get_vertices_mut()
                 .sort_clockwise()
                 .extrude(Vec3::new(0.0, 0.0, -settings.extrude));
-            settings.vertices = my_mesh.vertices.len() as u32;
+            settings.vertices = my_mesh.get_vertices().len() as u32;
             my_mesh.bevy_set(mesh);
         }
     }
@@ -83,7 +84,16 @@ pub fn setup_meshes(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
+    mut materials2: ResMut<Assets<ColorMaterial>>,
 ) {
+    commands.spawn(MaterialMesh2dBundle {
+        mesh: meshes
+            .add(PMesh::<u16>::default().to_bevy(RenderAssetUsages::all()))
+            .into(),
+        material: materials2.add(Color::PURPLE),
+        ..default()
+    });
+
     commands.spawn((
         PbrBundle {
             mesh: meshes.add(Mesh::from(Cuboid::new(1.0, 1.0, 1.0))),

@@ -1,30 +1,47 @@
-use super::mesh::MyMesh;
-use bevy::prelude::*;
+use super::mesh::PMesh;
+use crate::IndexType;
+use bevy::{prelude::*, render::mesh::VertexAttributeValues};
 use lyon::math::Angle;
+use std::ops::Index;
 
+/// A list of vertices.
 #[derive(Clone, Debug)]
-pub struct MyPath {
-    pub vertices: Vec<[f32; 3]>,
+pub struct PVertices {
+    vertices: Vec<[f32; 3]>,
 }
 
-impl MyPath {
+impl Index<usize> for PVertices {
+    type Output = [f32; 3];
+
+    #[inline(always)]
+    fn index<'a>(&'a self, i: usize) -> &'a [f32; 3] {
+        &self.vertices[i]
+    }
+}
+
+impl PVertices {
+    /// Creates a new PVertices with an empty list of vertices.
     pub fn new() -> Self {
-        MyPath {
+        PVertices {
             vertices: Vec::new(),
         }
     }
 
-    pub fn build(vertices: Vec<[f32; 3]>) -> MyPath {
-        MyPath {
+    /// Returns a reference to the vector of vertices.
+    #[inline(always)]
+    pub fn get_vertices(&self) -> &Vec<[f32; 3]> {
+        &self.vertices
+    }
+
+    /// Builds a new PVertices with the given vector of vertices consuming the vector.
+    pub fn build(vertices: Vec<[f32; 3]>) -> PVertices {
+        PVertices {
             vertices: vertices.clone(),
         }
     }
 
-    pub fn append(&mut self, m: &MyPath) {
-        self.vertices.extend(m.vertices.clone());
-    }
-
-    pub fn rotate_y(&mut self, angle: Angle) -> &mut MyPath {
+    /// Rotates the vertices around the y axis by the given angle.
+    pub fn rotate_y(&mut self, angle: Angle) -> &mut PVertices {
         let sin = angle.get().sin();
         let cos = angle.get().cos();
         for v in &mut self.vertices {
@@ -36,7 +53,8 @@ impl MyPath {
         self
     }
 
-    pub fn translate(&mut self, x: f32, y: f32, z: f32) -> &mut MyPath {
+    /// Translates the vertices by the given vector.
+    pub fn translate(&mut self, x: f32, y: f32, z: f32) -> &mut PVertices {
         for v in &mut self.vertices {
             v[0] += x;
             v[1] += y;
@@ -45,7 +63,8 @@ impl MyPath {
         self
     }
 
-    pub fn scale(&mut self, x: f32, y: f32, z: f32) -> &mut MyPath {
+    /// Scales the vertices by the given vector.
+    pub fn scale(&mut self, x: f32, y: f32, z: f32) -> &mut PVertices {
         for v in &mut self.vertices {
             v[0] *= x;
             v[1] *= y;
@@ -54,10 +73,12 @@ impl MyPath {
         self
     }
 
+    /// Returns the number of vertices in the PVertices.
     pub fn len(&self) -> usize {
         self.vertices.len()
     }
 
+    /// Returns the length of the arc defined by the vertices (assuming they form a path)
     pub fn arc_len(&self) -> f32 {
         let mut len = 0.0;
         for i in 0..self.len() - 1 {
@@ -66,10 +87,12 @@ impl MyPath {
         len
     }
 
-    pub fn extend(&mut self, other: MyPath) {
-        self.vertices.extend(other.vertices);
+    /// Appends more vertices to the vector of vertices.
+    pub fn extend(&mut self, other: &PVertices) {
+        self.vertices.extend(other.vertices.clone());
     }
 
+    /// Returns the vertex at the given index.
     pub fn vec(&self, i: usize) -> Vec3 {
         assert!(i < self.len());
         Vec3::new(
@@ -79,7 +102,11 @@ impl MyPath {
         )
     }
 
-    pub fn extrude(&mut self, direction: Vec3) -> MyMesh {
+    /// Extrudes the vertices in the given direction.
+    pub fn extrude<T>(&mut self, direction: Vec3) -> PMesh<T>
+    where
+        T: IndexType,
+    {
         let mut vertices: Vec<[f32; 3]> = Vec::new();
         let mut indices: Vec<u32> = Vec::new();
 
@@ -134,10 +161,11 @@ impl MyPath {
         })
         .collect();*/
 
-        MyMesh::build(vertices, indices, Some(uv))
+        PMesh::build(vertices, indices, Some(uv))
     }
 
-    pub fn sort_clockwise(&mut self) -> MyPath {
+    /// Sorts the vertices in clockwise order around their average.
+    pub fn sort_clockwise(&mut self) -> PVertices {
         let mut center = Vec3::new(0.0, 0.0, 0.0);
         for v in &self.vertices {
             center += Vec3::new(v[0], v[1], v[2]);
@@ -163,4 +191,8 @@ impl MyPath {
         self.clone()
     }
 
+    /// Converts the PVertices to a Bevy VertexAttributeValues.
+    pub fn to_bevy(&self) -> VertexAttributeValues {
+        VertexAttributeValues::Float32x3(self.vertices.clone())
+    }
 }

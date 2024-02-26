@@ -1,16 +1,18 @@
 # Bevy Procedural: Meshes
 
-
 [![Build Status](https://github.com/bevy-procedural/meshes/actions/workflows/rust.yml/badge.svg)](https://github.com/bevy-procedural/meshes/actions)
 [![Documentation](https://docs.rs/bevy_procedural_meshes/badge.svg)](https://docs.rs/bevy_procedural_meshes)
-[![Bevy Support](https://img.shields.io/badge/Bevy%20tracking-1.3-lightblue)](https://bevyengine.org/learn/book/plugin-development/#main-branch-tracking)
+[![Bevy Tracking](https://img.shields.io/badge/Bevy%20tracking-1.3-lightblue)](https://bevyengine.org/learn/book/plugin-development/#main-branch-tracking)
 [![crates.io](https://img.shields.io/crates/v/bevy_procedural_meshes)](https://crates.io/crates/bevy_procedural_meshes)
 [![Downloads](https://img.shields.io/crates/d/bevy_procedural_meshes)](https://crates.io/crates/bevy_procedural_meshes)
-[![GitHub Repo stars](https://img.shields.io/github/stars/bevy-procedural/meshes)](https://github.com/Nilirad/bevy-procedural/meshes)
+[![GitHub Repo stars](https://img.shields.io/github/stars/bevy-procedural/meshes)](https://github.com/bevy-procedural/meshes)
+[![Discord](https://img.shields.io/discord/691052431525675048.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.com/channels/691052431525675048/1035260359952576603)
+[![Lines of Code](https://tokei.rs/b1/github/bevy-procedural/meshes)](https://github.com/bevy-procedural/meshes)
 
 The objective of the [Bevy Procedural Project](https://bevy-procedural.org) is to provide a comprehensive suite of packages for the generation of procedural graphics, unified by a consistent API.
 
-The [bevy_procedural_meshes](https://bevy-procedural.org/meshes)-crate is a procedural mesh builder for bevy. It can use [Lyon](https://github.com/nical/lyon) to generate 2D shapes and extrude them into 3D meshes. It also supports (very!) simple methods for off-screen rendering and Constructive Solid Geometry.
+The [bevy_procedural_meshes](https://bevy-procedural.org/meshes)-crate is a procedural mesh builder for bevy. It can use [Lyon](https://github.com/nical/lyon) to generate 2D shapes and extrude them into 3D meshes. Meshes can also be optimized using [Meshopt](https://github.com/gwihlidal/meshopt-rs) to improve their performance. Plans for future versions also include simple methods for Constructive Solid Geometry.
+
 
 ## WARNING
 
@@ -23,9 +25,50 @@ Try the live examples!
  * [2d](https://bevy-procedural.org/examples/meshes/2d)
  * [3d](https://bevy-procedural.org/examples/meshes/3d)
 
-Or run the [examples]() like, e.g., `cargo run --example 2d --features="bevy/bevy_sprite bevy/bevy_winit"`.
+Or run the [examples]() on your computer like, e.g., `cargo run --features="bevy/default" --example 2d`.
 
 For package development, we recommend using the `editor`-subcrate. This example has a little [egui](https://github.com/jakobhellermann/bevy-inspector-egui/)-editor. Run it using `cargo watch -w editor/src -w src -x "run -p editor --profile fast-dev"`. The `fast-dev` profile will enable optimizations for the dependencies, but not for the package itself. This will slow down the first build _significantly_, but incremental builds are slightly faster and bevy's performance improves a lot.
+
+
+## Usage
+
+Install using `cargo add bevy_procedural_meshes`. Create meshes for bevy like:
+
+```rs
+use bevy_procedural_meshes::*;
+
+fn setup(
+    mut commands: Commands,
+    mut meshes: ResMut<Assets<Mesh>>,
+    mut materials: ResMut<Assets<StandardMaterial>>,
+) {
+    let mut fill = PFill::new(0.01);
+    fill.draw(|builder| {
+        builder
+            .begin_here()
+            .quadratic_bezier_to(Vec2::new(3.0, 3.0), Vec2::new(1.5, 3.0))
+            .quadratic_bezier_to(Vec2::new(0.0, 3.0), Vec2::new(0.0, 0.0))
+            .close();
+    });
+    let bevy_mesh = fill.build::<u16>(false).to_bevy(RenderAssetUsages::default());
+    
+    commands.spawn(PbrBundle {
+        mesh: meshes.add(bevy_mesh),
+        material: materials.add(StandardMaterial::default()),
+        ..default()
+    });
+}
+```
+
+
+## Features
+
+The following features are available:
+
+* `meshopt` -- Use [Meshopt](https://github.com/gwihlidal/meshopt-rs) to optimize the performance of generated meshes. 
+* `lyon` -- Use [Lyon](https://github.com/nical/lyon) to tesselate 2D shapes like bezier curves and strokes.
+* `fast-dev` -- Compiles bevy as a dynamic library. Useful for development builds. 
+
 
 
 ## Supported Bevy Versions
@@ -34,7 +77,7 @@ The following table shows the compatibility of `bevy_procedural_meshes` with cer
 
 | bevy | bevy_procedural_meshes |
 | ---- | ---------------------- |
-| 0.13 | 0.1.*                  |
+| 0.13 | 0.1.*, main            |
 
 
 ## License

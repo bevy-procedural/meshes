@@ -835,6 +835,8 @@ dependencies = [
  "bevy",
  "bevy-inspector-egui",
  "lyon",
+ "memoffset",
+ "meshopt",
 ]
 
 [[package]]
@@ -1885,6 +1887,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "float-cmp"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "98de4bbd547a563b716d8dfa9aad1cb19bfab00f4fa09a6a4ed21dbcf44ce9c4"
+dependencies = [
+ "num-traits",
+]
+
+[[package]]
 name = "float_next_after"
 version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2646,6 +2657,27 @@ name = "memchr"
 version = "2.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "523dc4f511e55ab87b694dc30d0f820d60906ef06413f93d4d7a1385599cc149"
+
+[[package]]
+name = "memoffset"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5a634b1c61a95585bd15607c6ab0c4e5b226e695ff2800ba0cdccddf208c406c"
+dependencies = [
+ "autocfg",
+]
+
+[[package]]
+name = "meshopt"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "42687e11b65449d95b7a7fe64b0552ee7a8b7ade1afbc4b0191ac257f65b66cb"
+dependencies = [
+ "bitflags 2.4.2",
+ "cc",
+ "float-cmp",
+ "thiserror",
+]
 
 [[package]]
 name = "metal"

@@ -1,14 +1,84 @@
 use bevy::{
-    diagnostic::FrameTimeDiagnosticsPlugin, pbr::CascadeShadowConfigBuilder, prelude::*, render::render_asset::RenderAssetUsages, sprite::MaterialMesh2dBundle, window::WindowResolution
+    diagnostic::FrameTimeDiagnosticsPlugin,
+    pbr::{
+        wireframe::{WireframeConfig, WireframePlugin},
+        CascadeShadowConfigBuilder,
+    },
+    prelude::*,
+    render::render_asset::RenderAssetUsages,
+    window::WindowResolution,
 };
 use bevy_inspector_egui::{
     inspector_options::ReflectInspectorOptions,
-    quick::{FilterQueryInspectorPlugin, WorldInspectorPlugin},
+    quick::{FilterQueryInspectorPlugin, ResourceInspectorPlugin, WorldInspectorPlugin},
     InspectorOptions,
 };
 use bevy_panorbit_camera::*;
-use bevy_procedural_meshes::*;
+use bevy_procedural_meshes::mesh::{
+    lyon::{PFill, Winding},
+    meshopt::{MeshoptAnalysis, MeshoptSettings},
+    PMesh,
+};
 use std::{env, f32::consts::PI};
+
+#[derive(Reflect, Resource, InspectorOptions)]
+#[reflect(Resource, InspectorOptions)]
+struct GlobalSettings {
+    #[inspector(min = 0.1, max = 10.0)]
+    extrusion: f32,
+
+    #[inspector(min = -20.0, max = 10.0)]
+    tol: f32,
+    #[inspector(min = 0.0, max = 3.0)]
+    inner_radius: f32,
+    #[inspector(min = 0.0, max = 3.0)]
+    outer_radius: f32,
+    #[inspector(min = 0.0, max = 3.0)]
+    circle_radius: f32,
+    #[inspector(min = 2, max = 50)]
+    points: u32,
+
+    meshopt: bool,
+    settings: MeshoptSettings,
+    analysis: MeshoptAnalysis,
+}
+
+impl Default for GlobalSettings {
+    fn default() -> Self {
+        GlobalSettings {
+            extrusion: 5.0,
+            tol: -4.0,
+            inner_radius: 1.0,
+            outer_radius: 2.0,
+            circle_radius: 1.0,
+            points: 5,
+
+            meshopt: false,
+            settings: MeshoptSettings::default(),
+            analysis: MeshoptAnalysis::default(),
+        }
+    }
+}
+
+#[derive(Reflect, Component, InspectorOptions)]
+#[reflect(Component, InspectorOptions)]
+pub struct MeshSettings {
+    #[inspector(min = 0.1, max = 10.0)]
+    extrude: f32,
+    #[inspector(min = -20.0, max = 10.0)]
+    tol: f32,
+    vertices: u32,
+}
+
+impl Default for MeshSettings {
+    fn default() -> Self {
+        MeshSettings {
+            extrude: 5.0,
+            tol: -10.0,
+            vertices: 0,
+        }
+    }
+}
 
 pub fn main() {
     env::set_var("RUST_BACKTRACE", "1"); // or "full"
@@ -23,9 +93,17 @@ pub fn main() {
             }),
             ..default()
         }))
+        .add_plugins(WireframePlugin)
+        .insert_resource(WireframeConfig {
+            global: true,
+            default_color: Color::WHITE,
+        })
+        .register_type::<GlobalSettings>()
+        .insert_resource(GlobalSettings::default())
         .register_type::<MeshSettings>()
         .add_plugins((
             FilterQueryInspectorPlugin::<With<MeshSettings>>::default(),
+            ResourceInspectorPlugin::<GlobalSettings>::default(),
             WorldInspectorPlugin::default(),
             FrameTimeDiagnosticsPlugin,
             PanOrbitCameraPlugin,
@@ -36,76 +114,57 @@ pub fn main() {
         .run();
 }
 
-#[derive(Reflect, Component, InspectorOptions)]
-#[reflect(Component, InspectorOptions)]
-pub struct MeshSettings {
-    #[inspector(min = 0.1, max = 10.0)]
-    extrude: f32,
-    #[inspector(min = -20.0, max = 1.0)]
-    tol: f32,
-    vertices: u32,
-}
-
-impl Default for MeshSettings {
-    fn default() -> Self {
-        MeshSettings {
-            extrude: 5.0,
-            tol: -5.0,
-            vertices: 0,
-        }
-    }
-}
-
-pub fn update_meshes(
-    mut query: Query<(&Handle<Mesh>, &mut MeshSettings), Changed<MeshSettings>>,
+fn update_meshes(
+    query: Query<&Handle<Mesh>>,
     mut assets: ResMut<Assets<Mesh>>,
+    mut settings: ResMut<GlobalSettings>,
 ) {
-    for (handle, mut settings) in query.iter_mut() {
-        if let Some(mesh) = assets.get_mut(handle.id()) {
-            let mut fill = PFill::new(2.0f32.powf(settings.tol));
-            fill.draw(|builder| {
-                builder.begin(Vec2::new(3.0, 0.0));
-                builder.quadratic_bezier_to(Vec2::new(3.0, 3.0), Vec2::new(1.5, 3.0));
-                builder.quadratic_bezier_to(Vec2::new(0.0, 3.0), Vec2::new(0.0, 0.0));
-                builder.end(true);
-            });
-            let my_mesh: PMesh<u16> = fill
-                .build::<u16>(false)
-                .get_vertices_mut()
-                .sort_clockwise()
-                .extrude(Vec3::new(0.0, 0.0, -settings.extrude));
-            settings.vertices = my_mesh.get_vertices().len() as u32;
-            my_mesh.bevy_set(mesh);
+    let angle = std::f32::consts::PI / settings.points as f32;
+
+    let mut fill = PFill::new(2.0f32.powf(settings.tol));
+    fill.draw(|builder| {
+        builder.push().begin(Vec2::new(settings.inner_radius, 0.0));
+        for _ in 0..settings.points {
+            builder
+                .rotate(angle)
+                .line_to(Vec2::new(settings.outer_radius, 0.0))
+                .rotate(angle)
+                .line_to(Vec2::new(settings.inner_radius, 0.0));
         }
+        builder.close_pop();
+
+        builder.add_circle(
+            Vec2::new(0.5, 0.5),
+            settings.circle_radius,
+            Winding::Positive,
+        );
+    });
+
+    let mut mesh = fill.build::<u16>(true);
+
+    if settings.meshopt {
+        mesh.mesh_opt(&settings.settings);
     }
+
+    settings.analysis = mesh.meshopt_analyse();
+
+    mesh.bevy_set(assets.get_mut(query.single().id()).unwrap());
 }
 
-pub fn setup_meshes(
+fn setup_meshes(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
-    mut materials2: ResMut<Assets<ColorMaterial>>,
 ) {
-    commands.spawn(MaterialMesh2dBundle {
-        mesh: meshes
-            .add(PMesh::<u16>::default().to_bevy(RenderAssetUsages::all()))
-            .into(),
-        material: materials2.add(Color::PURPLE),
-        ..default()
-    });
-
     commands.spawn((
         PbrBundle {
-            mesh: meshes.add(Mesh::from(Cuboid::new(1.0, 1.0, 1.0))),
+            mesh: meshes.add(PMesh::<u16>::new().to_bevy(RenderAssetUsages::default())),
             material: materials.add(StandardMaterial {
                 base_color: Color::rgb(0.5, 0.5, 0.5),
-                // base_color_texture: Some(tex),
-                double_sided: true,
+                double_sided: false,
                 cull_mode: None,
-                alpha_mode: AlphaMode::Mask(0.5),
                 ..default()
             }),
-            transform: Transform::from_xyz(0.0, 0.1, 0.0).with_scale(Vec3::new(0.3, 0.3, 0.3)),
             ..default()
         },
         MeshSettings::default(),
@@ -142,7 +201,7 @@ pub fn setup_meshes(
 
     commands.spawn((
         Camera3dBundle {
-            transform: Transform::from_xyz(2.0, 3.0, 2.0).looking_at(Vec3::ZERO, Vec3::Y),
+            transform: Transform::from_xyz(0.0, 5.0, 0.1).looking_at(Vec3::ZERO, Vec3::Y),
             ..default()
         },
         PanOrbitCamera::default(),

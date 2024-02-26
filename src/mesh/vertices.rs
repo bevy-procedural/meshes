@@ -1,7 +1,6 @@
-use super::mesh::PMesh;
+use super::PMesh;
 use crate::IndexType;
 use bevy::{prelude::*, render::mesh::VertexAttributeValues};
-use lyon::math::Angle;
 use std::ops::Index;
 
 /// A list of vertices.
@@ -35,15 +34,16 @@ impl PVertices {
 
     /// Builds a new PVertices with the given vector of vertices consuming the vector.
     pub fn build(vertices: Vec<[f32; 3]>) -> PVertices {
+        // TODO: Remove this!
         PVertices {
             vertices: vertices.clone(),
         }
     }
 
     /// Rotates the vertices around the y axis by the given angle.
-    pub fn rotate_y(&mut self, angle: Angle) -> &mut PVertices {
-        let sin = angle.get().sin();
-        let cos = angle.get().cos();
+    pub fn rotate_y(&mut self, angle: f32) -> &mut PVertices {
+        let sin = angle.sin();
+        let cos = angle.cos();
         for v in &mut self.vertices {
             let x = v[0];
             let z = v[2];

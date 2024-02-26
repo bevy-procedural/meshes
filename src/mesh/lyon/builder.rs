@@ -1,7 +1,6 @@
 use bevy::math::{Affine2, Vec2};
-pub use lyon::path::Winding;
 use lyon::{
-    path::{builder::NoAttributes, traits::Build},
+    path::{builder::NoAttributes, traits::Build, Winding},
     tessellation::FillBuilder,
 };
 

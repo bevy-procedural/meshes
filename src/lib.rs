@@ -1,19 +1,10 @@
 #![allow(dead_code)]
 
 //! ## Bevy Procedural: Meshes
+//! [![crates.io](https://img.shields.io/crates/v/bevy_procedural_meshes)](https://crates.io/crates/bevy_procedural_meshes)
+//! [![GitHub Repo stars](https://img.shields.io/github/stars/bevy-procedural/meshes)](https://github.com/bevy-procedural/meshes)
 //! This crate provides a set of procedural mesh generation tools for Bevy.
 
-mod builder;
-mod fill;
 mod index_type;
-mod indices;
-mod mesh;
-mod stroke;
-mod vertices;
-pub use builder::{PBuilder, Winding};
-pub use fill::PFill;
+pub mod mesh;
 pub use index_type::IndexType;
-pub use indices::PIndices;
-pub use mesh::PMesh;
-pub use stroke::PStroke;
-pub use vertices::PVertices;

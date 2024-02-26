@@ -1,5 +1,5 @@
 use super::builder::PBuilder;
-use super::mesh::PMesh;
+use super::super::PMesh;
 use lyon::{
     lyon_tessellation::geometry_builder::simple_builder,
     math::Point,

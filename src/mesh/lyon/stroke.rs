@@ -1,4 +1,4 @@
-use super::mesh::PMesh;
+use super::super::PMesh;
 use lyon::lyon_tessellation::geometry_builder::simple_builder;
 use lyon::math::Point;
 use lyon::path::builder::NoAttributes;

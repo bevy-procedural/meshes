@@ -140,6 +140,8 @@ where
     /// Inserts two degenerate triangles between each triangle in the list.
     /// TODO: This is not the most efficient way to do this...
     pub fn triangle_list_to_triangle_strip(&self) -> PIndices<T> {
+        // TODO: use meshopt for this
+        
         let mut indices = Vec::new();
         for face in self.chunks_exact(3) {
             indices.push(face[0]);

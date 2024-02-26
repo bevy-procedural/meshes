@@ -66,7 +66,8 @@ The following features are available:
 
 * `meshopt` -- Use [Meshopt](https://github.com/gwihlidal/meshopt-rs) to optimize the performance of generated meshes. 
 * `lyon` -- Use [Lyon](https://github.com/nical/lyon) to tesselate 2D shapes like bezier curves and strokes.
-* `fast-dev` -- Compiles bevy as a dynamic library. Useful for development builds. 
+* `inspector` -- Add [bevy-inspector-egui](https://github.com/jakobhellermann/bevy-inspector-egui)-support to different structs.
+* `dynamic` -- Compiles bevy as a dynamic library. Useful for development builds. 
 
 
 

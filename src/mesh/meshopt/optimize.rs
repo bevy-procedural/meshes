@@ -3,14 +3,14 @@ use super::util::{get_adapter, MeshoptMesh};
 use crate::IndexType;
 use bevy::prelude::*;
 
-#[cfg(feature = "fast-dev")]
+#[cfg(feature = "inspector")]
 use bevy_inspector_egui::{inspector_options::ReflectInspectorOptions, InspectorOptions};
 
 /// Settings for the meshopt Optimization
 #[derive(Reflect, Resource)]
 #[reflect(Resource)]
-#[cfg_attr(feature = "fast-dev", derive(InspectorOptions))]
-#[cfg_attr(feature = "fast-dev", reflect(InspectorOptions))]
+#[cfg_attr(feature = "inspector", derive(InspectorOptions))]
+#[cfg_attr(feature = "inspector", reflect(InspectorOptions))]
 pub struct MeshoptSettings {
     /// Whether the mesh should be simplified
     pub simplify: bool,

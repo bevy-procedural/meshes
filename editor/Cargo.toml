@@ -12,7 +12,7 @@ bevy_panorbit_camera = { version = "0.15.0", features = ["bevy_egui"] }
 
 [dependencies.bevy_procedural_meshes]
 path = "../"
-features = ["fast-dev", "meshopt"]
+features = ["dynamic", "meshopt", "inspector", "lyon"]
 
 [package.metadata]
 hot_reload_features = ["bevy/dynamic_linking", "bevy/embedded_watcher"]

@@ -5,14 +5,14 @@ use bevy::{ecs::system::Resource, prelude::*};
 use meshopt::analyze::analyze_vertex_cache;
 use meshopt::{analyze_overdraw, analyze_vertex_fetch};
 
-#[cfg(feature = "fast-dev")]
+#[cfg(feature = "inspector")]
 use bevy_inspector_egui::{inspector_options::ReflectInspectorOptions, InspectorOptions};
 
 /// Results when analyzing the mesh efficiency using meshopt
 #[derive(Reflect, Default, Resource)]
 #[reflect(Resource)]
-#[cfg_attr(feature = "fast-dev", derive(InspectorOptions))]
-#[cfg_attr(feature = "fast-dev", reflect(InspectorOptions))]
+#[cfg_attr(feature = "inspector", derive(InspectorOptions))]
+#[cfg_attr(feature = "inspector", reflect(InspectorOptions))]
 pub struct MeshoptAnalysis {
     /// The number of vertices in the mesh
     pub vertex_count: usize,

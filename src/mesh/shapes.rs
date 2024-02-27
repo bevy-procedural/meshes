@@ -66,7 +66,7 @@ where
     /// Creates a hexagon mesh.
     pub fn polygon(radius: f32, sides: usize) -> PMesh<T> {
         let mut v = Vec::new();
-        for i in 3..sides {
+        for i in 0..sides {
             let angle = ((sides - i) as f32 + 0.5) * std::f32::consts::PI / 3.0;
             v.push([radius * angle.cos(), radius * angle.sin(), 0.0]);
         }

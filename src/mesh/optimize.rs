@@ -484,6 +484,7 @@ where
         self.indices.push(new[0], right2, left2);
     }
 
+    /// WARNING: Not yet implemented
     fn process_edge_intersections(
         &mut self,
         intersections: Vec<EdgeIntersection>,
@@ -574,6 +575,8 @@ where
     }
 
     /// Inserts vertices at all complanar intersections of edges and converts the created shapes into triangles.
+    ///
+    /// WARNING: Not yet implemented
     pub fn cut_complanar_edges(&mut self, in_max_changes: u32) -> &mut PMesh<T> {
         // TODO: this is very slow!
 
@@ -681,6 +684,8 @@ where
     }
 
     /// Removes all vertices that are in the middle of a flat surface and can be removed.
+    ///    
+    /// WARNING: Not yet implemented
     pub fn remove_coplanar_vertices(&mut self) -> &mut PMesh<T> {
         /*let tol = 0.0001;
 

@@ -53,7 +53,7 @@ struct GlobalSettings {
 impl Default for GlobalSettings {
     fn default() -> Self {
         GlobalSettings {
-            line_opt: true,
+            line_opt: false,
             tol: -4.0,
             px: -40.586,
             py: 23.552,

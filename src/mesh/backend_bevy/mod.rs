@@ -51,13 +51,13 @@ where
             mesh.compute_flat_normals();
         }
 
-        if mesh.contains_attribute(Mesh::ATTRIBUTE_NORMAL) {
+        /*if mesh.contains_attribute(Mesh::ATTRIBUTE_NORMAL) {
             // This will sometimes panic when the mesh is weird. Not very stable at all!
             if mesh.generate_tangents().is_err() {
                 // TODO
                 println!("WARN: Failed to generate tangents");
             }
-        }
+        }*/
     }
 
     /// Creates a bevy mesh from the mesh.

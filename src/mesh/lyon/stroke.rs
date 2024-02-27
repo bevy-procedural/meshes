@@ -67,7 +67,7 @@ where
     {
         let mut tessellator = PStroke::<T>::new(width, tol);
         tessellator.draw(draw_commands);
-        *self = tessellator.build();
+        self.extend(&tessellator.build());
         self
     }
 }

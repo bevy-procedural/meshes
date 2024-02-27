@@ -32,6 +32,13 @@ impl PVertices {
         &self.vertices
     }
 
+    /// Returns a reference to the vector of vertices.
+    #[inline(always)]
+    pub fn get_vertices_mut(&mut self) -> &mut Vec<[f32; 3]> {
+        // TODO: remove this
+        &mut self.vertices
+    }
+
     /// Builds a new PVertices with the given vector of vertices consuming the vector.
     pub fn build(vertices: Vec<[f32; 3]>) -> PVertices {
         // TODO: Remove this!

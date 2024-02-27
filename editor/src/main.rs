@@ -23,11 +23,19 @@ use std::{env, f32::consts::PI};
 #[derive(Reflect, Resource, InspectorOptions)]
 #[reflect(Resource, InspectorOptions)]
 struct GlobalSettings {
-    #[inspector(min = 0.1, max = 10.0)]
-    extrusion: f32,
+    line_opt: bool,
 
     #[inspector(min = -20.0, max = 10.0)]
     tol: f32,
+
+    #[inspector(min = -100.0, max = 100.0)]
+    px: f32,
+    #[inspector(min = -100.0, max = 100.0)]
+    py: f32,
+
+    #[inspector(min = 1, max = 50)]
+    max_changes: u32,
+
     #[inspector(min = 0.0, max = 3.0)]
     inner_radius: f32,
     #[inspector(min = 0.0, max = 3.0)]
@@ -45,8 +53,11 @@ struct GlobalSettings {
 impl Default for GlobalSettings {
     fn default() -> Self {
         GlobalSettings {
-            extrusion: 5.0,
+            line_opt: true,
             tol: -4.0,
+            px: -40.586,
+            py: 23.552,
+            max_changes: 1,
             inner_radius: 1.0,
             outer_radius: 2.0,
             circle_radius: 1.0,
@@ -117,10 +128,12 @@ fn update_meshes(
     query: Query<&Handle<Mesh>>,
     mut assets: ResMut<Assets<Mesh>>,
     mut settings: ResMut<GlobalSettings>,
+    windows: Query<&Window>,
+    camera_q: Query<(&Camera, &GlobalTransform)>,
 ) {
+    /*
     let angle = std::f32::consts::PI / settings.points as f32;
-
-    let mut mesh = PMesh::<u16>::polygon(1.0, 6);
+    let mut mesh = PMesh::<u16>::new(); //polygon(1.0, 6);
     mesh.fill(2.0f32.powf(settings.tol), |builder| {
         builder.push().begin(Vec2::new(settings.inner_radius, 0.0));
         for _ in 0..settings.points {
@@ -133,17 +146,55 @@ fn update_meshes(
         builder.close_pop();
 
         builder.add_circle(
-            Vec2::new(0.5, 0.5),
+            Vec2::new(0.8, 0.8),
             settings.circle_radius,
             Winding::Positive,
         );
     });
+    mesh.stroke(0.1, 2.0f32.powf(settings.tol), |builder| {
+        builder.add_circle(
+            Vec2::new(settings.px / 50.0, settings.py / 50.0),
+            settings.circle_radius,
+            Winding::Positive,
+        );
+    });*/
+
+
+
+    let window = windows.single();
+    let (camera, camera_transform) = camera_q.single();
+    if let Some(ray) = window
+        .cursor_position()
+        .and_then(|cursor| camera.viewport_to_world(camera_transform, cursor))
+    {
+        let distance = ray
+            .intersect_plane(Vec3::ZERO, Plane3d::new(Vec3::Y))
+            .unwrap_or(0.0);
+        let world_position = ray.get_point(distance);
+        settings.px = world_position.x * 50.0;
+        settings.py = world_position.z * 50.0;
+    }
+
+    if !settings.is_changed() {
+        return;
+    }
+
+    let mut mesh = PMesh::<u16>::polygon(1.0, 6).scale_uniform(1.0)
+        + PMesh::<u16>::triangle([0.0, 0.0, 0.0], [0.0, 1.0, 0.0], [1.0, 0.0, 0.0]).translate(
+            settings.px / 50.0,
+            settings.py / 50.0,
+            0.0,
+        ).flip_yz().rotate_y(0.1).flip_yz();
 
     if settings.meshopt {
         mesh.mesh_opt(&settings.settings);
     }
 
     settings.analysis = mesh.meshopt_analyse();
+
+    if settings.line_opt {
+        mesh.cut_complanar_edges(settings.max_changes);
+    }
 
     mesh.flip_yz()
         .bevy_set(assets.get_mut(query.single().id()).unwrap());
@@ -158,7 +209,8 @@ fn setup_meshes(
         PbrBundle {
             mesh: meshes.add(PMesh::<u16>::new().to_bevy(RenderAssetUsages::default())),
             material: materials.add(StandardMaterial {
-                base_color: Color::rgb(0.5, 0.5, 0.5),
+                base_color: Color::rgba(1.0, 1.0, 1.0, 0.5),
+                alpha_mode: AlphaMode::Blend,
                 double_sided: false,
                 cull_mode: None,
                 ..default()

@@ -71,7 +71,7 @@ where
     {
         let mut tessellator = PFill::<T>::new(tol);
         tessellator.draw(draw_commands);
-        *self = tessellator.build();
+        self.extend(&tessellator.build());
         self
     }
 }

@@ -43,14 +43,39 @@ where
         PIndices { indices }
     }
 
+    /// Push a triangle to the list of indices.
+    pub fn push(&mut self, a: T, b: T, c: T) -> &mut Self {
+        self.indices.push(a);
+        self.indices.push(b);
+        self.indices.push(c);
+        self
+    }
+
+    /// Overwrites the indices at the given index with the given values.
+    pub fn overwrite(&mut self, i: usize, a: T, b: T, c: T) -> &mut Self {
+        self.indices[3 * i + 0] = a;
+        self.indices[3 * i + 1] = b;
+        self.indices[3 * i + 2] = c;
+        self
+    }
+
+    /// Returns the triangle at the given index.
+    pub fn get_triangle(&self, i: usize, rotate: usize) -> (T, T, T) {
+        (
+            self.indices[3 * i + (rotate + 0) % 3],
+            self.indices[3 * i + (rotate + 1) % 3],
+            self.indices[3 * i + (rotate + 2) % 3],
+        )
+    }
+
     /// Returns a reference to the vector of indices.
     pub fn get_indices(&self) -> &Vec<T> {
         &self.indices
     }
 
     /// Returns a mutable reference to the vector of indices.
-    pub fn get_indices_mut(&self) -> &Vec<T> {
-        &self.indices
+    pub fn get_indices_mut(&mut self) -> &mut Vec<T> {
+        &mut self.indices
     }
 
     /// Returns an iterator over the indices.
@@ -141,7 +166,7 @@ where
     /// TODO: This is not the most efficient way to do this...
     pub fn triangle_list_to_triangle_strip(&self) -> PIndices<T> {
         // TODO: use meshopt for this
-        
+
         let mut indices = Vec::new();
         for face in self.chunks_exact(3) {
             indices.push(face[0]);

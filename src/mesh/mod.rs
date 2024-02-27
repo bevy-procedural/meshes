@@ -7,9 +7,12 @@ mod vertices;
 pub use indices::PIndices;
 pub use vertices::PVertices;
 mod backend_bevy;
+mod geometry;
 mod iter;
 mod normals;
+mod optimize;
 mod shapes;
+mod operator;
 
 #[cfg(feature = "meshopt")]
 pub mod meshopt;

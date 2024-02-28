@@ -1,7 +1,7 @@
 # Bevy Procedural: Meshes
 
 [![Documentation](https://docs.rs/bevy_procedural_meshes/badge.svg)](https://docs.rs/bevy_procedural_meshes)
-[![Bevy Tracking](https://img.shields.io/badge/Bevy%20tracking-1.3-lightblue)](https://bevyengine.org/learn/book/plugin-development/#main-branch-tracking)
+[![Bevy Tracking](https://img.shields.io/badge/Bevy%20tracking-0.13-lightblue)](https://bevyengine.org/learn/book/plugin-development/#main-branch-tracking)
 [![crates.io](https://img.shields.io/crates/v/bevy_procedural_meshes)](https://crates.io/crates/bevy_procedural_meshes)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![License: Apache](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)

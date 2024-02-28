@@ -1,10 +1,9 @@
 # Bevy Procedural: Meshes
 
 [![Documentation](https://docs.rs/bevy_procedural_meshes/badge.svg)](https://docs.rs/bevy_procedural_meshes)
-[![Bevy Tracking](https://img.shields.io/badge/Bevy%20tracking-0.13-lightblue)](https://bevyengine.org/learn/book/plugin-development/#main-branch-tracking)
+[![Bevy](https://img.shields.io/badge/Bevy%20tracking-released%20version-lightblue)](https://bevyengine.org/learn/quick-start/plugin-development/#main-branch-tracking)
 [![crates.io](https://img.shields.io/crates/v/bevy_procedural_meshes)](https://crates.io/crates/bevy_procedural_meshes)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![License: Apache](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![License](https://img.shields.io/crates/l/bevy_procedural_meshes)](https://bevyengine.org/learn/quick-start/plugin-development/#licensing)
 
 
 The objective of the [Bevy Procedural Project](https://bevy-procedural.org) is to provide a comprehensive suite of packages for the generation of procedural graphics, unified by a consistent API.

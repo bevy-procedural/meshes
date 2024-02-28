@@ -10,9 +10,9 @@ mod backend_bevy;
 mod geometry;
 mod iter;
 mod normals;
-mod optimize;
-mod shapes;
 mod operator;
+mod shapes;
+//mod optimize;
 
 #[cfg(feature = "meshopt")]
 pub mod meshopt;

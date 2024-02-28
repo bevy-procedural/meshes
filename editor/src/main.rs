@@ -23,8 +23,6 @@ use std::{env, f32::consts::PI};
 #[derive(Reflect, Resource, InspectorOptions)]
 #[reflect(Resource, InspectorOptions)]
 struct GlobalSettings {
-    line_opt: bool,
-
     #[inspector(min = -20.0, max = 10.0)]
     tol: f32,
 
@@ -53,7 +51,6 @@ struct GlobalSettings {
 impl Default for GlobalSettings {
     fn default() -> Self {
         GlobalSettings {
-            line_opt: false,
             tol: -4.0,
             px: -40.586,
             py: 23.552,
@@ -131,7 +128,26 @@ fn update_meshes(
     windows: Query<&Window>,
     camera_q: Query<(&Camera, &GlobalTransform)>,
 ) {
-    /*
+    let window = windows.single();
+    let (camera, camera_transform) = camera_q.single();
+    if let Some(ray) = window
+        .cursor_position()
+        .and_then(|cursor| camera.viewport_to_world(camera_transform, cursor))
+    {
+        let distance = ray
+            .intersect_plane(Vec3::ZERO, Plane3d::new(Vec3::Y))
+            .unwrap_or(0.0);
+        let world_position = ray.get_point(distance);
+        if settings.px != world_position.x || settings.py != world_position.z {
+            settings.px = world_position.x;
+            settings.py = world_position.z;
+        }
+    }
+
+    if !settings.is_changed() {
+        return;
+    }
+
     let angle = std::f32::consts::PI / settings.points as f32;
     let mut mesh = PMesh::<u16>::new(); //polygon(1.0, 6);
     mesh.fill(2.0f32.powf(settings.tol), |builder| {
@@ -153,48 +169,17 @@ fn update_meshes(
     });
     mesh.stroke(0.1, 2.0f32.powf(settings.tol), |builder| {
         builder.add_circle(
-            Vec2::new(settings.px / 50.0, settings.py / 50.0),
+            Vec2::new(settings.px, settings.py),
             settings.circle_radius,
             Winding::Positive,
         );
-    });*/
-
-
-
-    let window = windows.single();
-    let (camera, camera_transform) = camera_q.single();
-    if let Some(ray) = window
-        .cursor_position()
-        .and_then(|cursor| camera.viewport_to_world(camera_transform, cursor))
-    {
-        let distance = ray
-            .intersect_plane(Vec3::ZERO, Plane3d::new(Vec3::Y))
-            .unwrap_or(0.0);
-        let world_position = ray.get_point(distance);
-        settings.px = world_position.x * 50.0;
-        settings.py = world_position.z * 50.0;
-    }
-
-    if !settings.is_changed() {
-        return;
-    }
-
-    let mut mesh = PMesh::<u16>::polygon(1.0, 6).scale_uniform(1.0)
-        + PMesh::<u16>::triangle([0.0, 0.0, 0.0], [0.0, 1.0, 0.0], [1.0, 0.0, 0.0]).translate(
-            settings.px / 50.0,
-            settings.py / 50.0,
-            0.0,
-        ).flip_yz().rotate_y(0.1).flip_yz();
+    });
 
     if settings.meshopt {
         mesh.mesh_opt(&settings.settings);
     }
 
     settings.analysis = mesh.meshopt_analyse();
-
-    if settings.line_opt {
-        mesh.cut_complanar_edges(settings.max_changes);
-    }
 
     mesh.flip_yz()
         .bevy_set(assets.get_mut(query.single().id()).unwrap());

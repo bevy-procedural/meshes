@@ -11,7 +11,7 @@
 
 The objective of the [Bevy Procedural Project](https://bevy-procedural.org) is to provide a comprehensive suite of packages for the generation of procedural graphics, unified by a consistent API.
 
-The [bevy_procedural_meshes](https://bevy-procedural.org/meshes)-crate is a procedural mesh builder for bevy. It can use [Lyon](https://github.com/nical/lyon) to generate 2D shapes and extrude them into 3D meshes. Meshes can also be optimized using [Meshopt](https://github.com/gwihlidal/meshopt-rs) to improve their performance. Plans for future versions also include simple methods for Constructive Solid Geometry.
+The [bevy_procedural_meshes](https://bevy-procedural.org/meshes)-crate is a procedural mesh builder for bevy. It can use [Lyon](https://github.com/nical/lyon) to generate 2D shapes and extrude them into 3D meshes. Meshes can also be optimized using [Meshopt](https://github.com/gwihlidal/meshopt-rs) to improve their performance. Plans for future versions also include more advanced mesh operations like 3D boolean operations, parametric surfaces, and L-systems.
 
 
 ## WARNING
@@ -25,7 +25,7 @@ Try the live examples!
  * [2d](https://bevy-procedural.org/examples/meshes/2d)
  * [3d](https://bevy-procedural.org/examples/meshes/3d)
 
-Or run the [examples]() on your computer like, e.g., `cargo run --features="bevy/default" --example 2d`.
+Or run the [examples](https://github.com/bevy-procedural/meshes/tree/main/examples) on your computer like, e.g., `cargo run --features="bevy/default" --example 2d`.
 
 For package development, we recommend using the `editor`-subcrate. This example has a little [egui](https://github.com/jakobhellermann/bevy-inspector-egui/)-editor. Run it using `cargo watch -w editor/src -w src -x "run -p editor --profile fast-dev"`. The `fast-dev` profile will enable optimizations for the dependencies, but not for the package itself. This will slow down the first build _significantly_, but incremental builds are slightly faster and bevy's performance improves a lot.
 

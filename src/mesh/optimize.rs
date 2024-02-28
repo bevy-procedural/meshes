@@ -3,6 +3,8 @@ use crate::{IndexType, PMesh};
 use bevy::math::Vec3;
 use std::collections::HashSet;
 
+// TODO: This attempt won't be fruitful; we are looking into the problem of boolean operations for meshes in another crate
+
 #[derive(Debug, Clone, Copy, PartialEq)]
 struct EdgeIntersection {
     pub edge1: usize,

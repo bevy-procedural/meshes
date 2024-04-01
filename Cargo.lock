@@ -829,7 +829,7 @@ dependencies = [
 
 [[package]]
 name = "bevy_procedural_meshes"
-version = "0.13.0"
+version = "0.13.1"
 dependencies = [
  "bevy",
  "bevy-inspector-egui",

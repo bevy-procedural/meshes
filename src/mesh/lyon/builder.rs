@@ -1,9 +1,6 @@
 use bevy::math::{Affine2, Vec2};
-use lyon::path::{
-    builder::NoAttributes,
-    traits::{Build, PathBuilder},
-    Winding,
-};
+pub use lyon::path::traits::PathBuilder;
+use lyon::path::{builder::NoAttributes, traits::Build, Winding};
 
 /// This structure wraps a `lyon::tesselation::PathBuilder` and adds functionality to apply transformations to the path being built.
 pub struct PBuilder<T>

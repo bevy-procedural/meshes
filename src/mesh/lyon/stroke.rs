@@ -3,7 +3,10 @@ use super::PBuilder;
 use crate::IndexType;
 use lyon::math::Point;
 use lyon::tessellation::geometry_builder::{MaxIndex, Positions};
-use lyon::tessellation::*;
+pub use lyon::tessellation::StrokeBuilder;
+use lyon::tessellation::{
+    BuffersBuilder, StrokeOptions, StrokeTessellator, VertexBuffers, VertexId,
+};
 use std::ops::Add;
 
 // TODO: allow other index sizes!

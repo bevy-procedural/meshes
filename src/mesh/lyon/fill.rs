@@ -1,15 +1,15 @@
-use std::ops::Add;
-
-use crate::IndexType;
-
 use super::super::PMesh;
 use super::builder::PBuilder;
-use lyon::tessellation::geometry_builder::{MaxIndex, Positions};
-use lyon::tessellation::VertexId;
+use crate::IndexType;
+pub use lyon::tessellation::FillBuilder;
 use lyon::{
     math::Point,
-    tessellation::{BuffersBuilder, FillBuilder, FillOptions, FillTessellator, VertexBuffers},
+    tessellation::{
+        geometry_builder::{MaxIndex, Positions},
+        BuffersBuilder, FillOptions, FillTessellator, VertexBuffers, VertexId,
+    },
 };
+use std::ops::Add;
 
 /// This structure wraps a `lyon::tesselation::FillTessellator` and adds functionality to apply transformations to the path being built.
 pub struct PFill<T>

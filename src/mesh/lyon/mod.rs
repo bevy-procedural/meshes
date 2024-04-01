@@ -5,10 +5,10 @@ use lyon::{lyon_tessellation::VertexBuffers, math::Point};
 mod builder;
 mod fill;
 mod stroke;
-pub use builder::PBuilder;
-pub use fill::PFill;
+pub use builder::{PBuilder, PathBuilder};
+pub use fill::{FillBuilder, PFill};
 pub use lyon::path::Winding;
-pub use stroke::PStroke;
+pub use stroke::{PStroke, StrokeBuilder};
 
 impl<T> PMesh<T>
 where

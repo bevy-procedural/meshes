@@ -88,5 +88,5 @@ opt-level = 3
 [profile.wasm-release]
 inherits = "release"
 opt-level = "z"
-lto = "fat"
+lto = "thin"
 codegen-units = 1

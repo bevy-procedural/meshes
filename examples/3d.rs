@@ -13,7 +13,7 @@ fn main() {
     App::new()
         .add_plugins((DefaultPlugins, WireframePlugin))
         .insert_resource(WireframeConfig {
-            global: true,
+            global: false,
             default_color: Color::WHITE,
         })
         .add_systems(Startup, setup)

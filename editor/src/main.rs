@@ -115,7 +115,6 @@ pub fn main() {
             FrameTimeDiagnosticsPlugin,
             PanOrbitCameraPlugin,
         ))
-        .add_systems(Update, bevy::window::close_on_esc)
         .add_systems(Startup, setup_meshes)
         .add_systems(Update, update_meshes)
         .run();
@@ -135,7 +134,7 @@ fn update_meshes(
         .and_then(|cursor| camera.viewport_to_world(camera_transform, cursor))
     {
         let distance = ray
-            .intersect_plane(Vec3::ZERO, Plane3d::new(Vec3::Y))
+            .intersect_plane(Vec3::ZERO, InfinitePlane3d::new(Vec3::Y))
             .unwrap_or(0.0);
         let world_position = ray.get_point(distance);
         if settings.px != world_position.x || settings.py != world_position.z {

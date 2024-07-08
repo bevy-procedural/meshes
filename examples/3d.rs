@@ -47,7 +47,7 @@ fn setup(
     commands.spawn(PbrBundle {
         mesh: meshes.add(PMesh::<u16>::default().to_bevy(RenderAssetUsages::all())),
         material: materials.add(StandardMaterial {
-            base_color: Color::PURPLE,
+            base_color: Color::WHITE,
             ..default()
         }),
         ..default()
@@ -84,7 +84,7 @@ fn update(
             .and_then(|cursor| camera.viewport_to_world(camera_transform, cursor))
         {
             let distance = ray
-                .intersect_plane(Vec3::ZERO, Plane3d::new(Vec3::Y))
+                .intersect_plane(Vec3::ZERO, InfinitePlane3d::new(Vec3::Y))
                 .unwrap_or(0.0);
             let world_position = ray.get_point(distance);
             builder.add_circle(

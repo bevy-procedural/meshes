@@ -14,10 +14,9 @@ The [bevy_procedural_meshes](https://bevy-procedural.org/meshes)-crate is a proc
 ## WARNING
 
 [![Build Status](https://github.com/bevy-procedural/meshes/actions/workflows/rust.yml/badge.svg)](https://github.com/bevy-procedural/meshes/actions)
-[![Discord](https://img.shields.io/discord/691052431525675048.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.com/channels/691052431525675048/1035260359952576603)
+[![Discord](https://img.shields.io/discord/691052431525675048.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.com/channels/691052431525675048/1034543904478998539)
 [![Downloads](https://img.shields.io/crates/d/bevy_procedural_meshes)](https://crates.io/crates/bevy_procedural_meshes)
 [![GitHub Repo stars](https://img.shields.io/github/stars/bevy-procedural/meshes)](https://github.com/bevy-procedural/meshes)
-[![Lines of Code](https://tokei.rs/b1/github/bevy-procedural/meshes)](https://github.com/bevy-procedural/meshes)
 
 This crate is still in a _very_ early stage of development. Expect frequent API modifications, bugs, and missing features. Feel free to contribute by opening issues, pull requests or sharing your ideas in [Github Discussion](https://github.com/bevy-procedural/meshes/discussions) or the [Bevy Discord](https://discord.gg/bevy).
 
@@ -79,7 +78,8 @@ The following table shows the compatibility of `bevy_procedural_meshes` with cer
 
 | bevy | bevy_procedural_meshes |
 | ---- | ---------------------- |
-| 0.13 | 0.1.*, main            |
+| 0.14 | 0.14.*, main           |
+| 0.13 | 0.1.*                  |
 
 
 ## License

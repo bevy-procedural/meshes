@@ -25,7 +25,7 @@ fn setup(
         mesh: meshes
             .add(PMesh::<u16>::default().to_bevy(RenderAssetUsages::all()))
             .into(),
-        material: materials.add(Color::PURPLE),
+        material: materials.add(Color::WHITE),
         ..default()
     });
 }

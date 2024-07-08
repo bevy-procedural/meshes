@@ -6,16 +6,18 @@ license = "MIT OR Apache-2.0"
 publish = false
 
 [dependencies]
-bevy = { version = "^0.14.0", features = ["bevy_sprite"] }
+bevy = { version = "^0.14.0", default-features = false, features = [
+    "bevy_sprite",
+    "bevy_winit",
+    "tonemapping_luts",
+    "bevy_pbr",
+] }
 bevy-inspector-egui = "^0.25.0"
 bevy_panorbit_camera = { version = "^0.19.0", features = ["bevy_egui"] }
 
 [dependencies.bevy_procedural_meshes]
 path = "../"
 features = ["dynamic", "meshopt", "inspector", "lyon"]
-
-[package.metadata]
-hot_reload_features = ["bevy/dynamic_linking"]
 
 # Enable a small amount of optimization in debug mode
 [profile.fast-dev]

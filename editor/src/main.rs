@@ -193,7 +193,7 @@ fn setup_meshes(
         PbrBundle {
             mesh: meshes.add(PMesh::<u16>::new().to_bevy(RenderAssetUsages::default())),
             material: materials.add(StandardMaterial {
-                base_color: Color::rgba(1.0, 1.0, 1.0, 0.5),
+                base_color: Color::srgba(1.0, 1.0, 1.0, 0.5),
                 alpha_mode: AlphaMode::Blend,
                 double_sided: false,
                 cull_mode: None,

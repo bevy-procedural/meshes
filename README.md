@@ -53,11 +53,10 @@ fn setup(
             .close();
     });
     
-    commands.spawn(PbrBundle {
-        mesh: meshes.add(mesh.to_bevy(RenderAssetUsages::all())),
-        material: materials.add(StandardMaterial::default()),
-        ..default()
-    });
+    commands.spawn((
+        Mesh3d(meshes.add(mesh.to_bevy(RenderAssetUsages::all()))),
+        MeshMaterial3d(materials.add(StandardMaterial::default())),
+    ));
 }
 ```
 

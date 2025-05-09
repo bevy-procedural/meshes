@@ -14,7 +14,7 @@ struct MeshHandleRes(Option<Handle<Mesh>>);
 
 fn main() {
     App::new()
-        .add_plugins((DefaultPlugins, WireframePlugin))
+        .add_plugins((DefaultPlugins, WireframePlugin::default()))
         .insert_resource(WireframeConfig {
             global: false,
             default_color: Color::WHITE,
@@ -83,8 +83,8 @@ fn update(
         }
         builder.close_pop();
 
-        let window = windows.single();
-        let (camera, camera_transform) = camera_q.single();
+        let window = windows.single().unwrap();
+        let (camera, camera_transform) = camera_q.single().unwrap();
         if let Some(ray) = window
             .cursor_position()
             .and_then(|cursor| camera.viewport_to_world(camera_transform, cursor).ok())

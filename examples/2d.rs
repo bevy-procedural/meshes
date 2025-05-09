@@ -58,8 +58,8 @@ fn update(
         }
         builder.close_pop();
 
-        let window = windows.single();
-        let (camera, camera_transform) = camera_q.single();
+        let window = windows.single().unwrap();
+        let (camera, camera_transform) = camera_q.single().unwrap();
         if let Some(world_position) = window
             .cursor_position()
             .and_then(|cursor| camera.viewport_to_world_2d(camera_transform, cursor).ok())

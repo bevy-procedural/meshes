@@ -5,32 +5,31 @@
 [![crates.io](https://img.shields.io/crates/v/bevy_procedural_meshes)](https://crates.io/crates/bevy_procedural_meshes)
 [![License](https://img.shields.io/crates/l/bevy_procedural_meshes)](https://bevyengine.org/learn/quick-start/plugin-development/#licensing)
 
-
 The objective of the [Bevy Procedural Project](https://bevy-procedural.org) is to provide a comprehensive suite of packages for the generation of procedural graphics, unified by a consistent API.
 
-The [bevy_procedural_meshes](https://bevy-procedural.org/meshes)-crate is a procedural mesh builder for bevy. It can use [Lyon](https://github.com/nical/lyon) to generate 2D shapes and extrude them into 3D meshes. Meshes can also be optimized using [Meshopt](https://github.com/gwihlidal/meshopt-rs) to improve their performance. Plans for future versions also include more advanced mesh operations like 3D boolean operations, parametric surfaces, and L-systems.
+The [bevy_procedural_meshes](https://bevy-procedural.org/meshes)-crate is a procedural mesh builder for bevy. It can use [Lyon](https://github.com/nical/lyon) to generate 2D shapes and extrude them into 3D meshes. Meshes can also be optimized using [Meshopt](https://github.com/gwihlidal/meshopt-rs) to improve their performance.
 
+# For a more advanced and half-edge-based mesh builder, check out the [procedural modelling](https://github.com/bevy-procedural/modelling) crate.
+
+Once [procedural modelling](https://github.com/bevy-procedural/modelling) has matured enough, _this_ crate will effectively become a bevy plugin for it.
 
 ## WARNING
 
 [![Build Status](https://github.com/bevy-procedural/meshes/actions/workflows/rust.yml/badge.svg)](https://github.com/bevy-procedural/meshes/actions)
-[![Discord](https://img.shields.io/discord/691052431525675048.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.com/channels/691052431525675048/1034543904478998539)
+[![Discord](https://img.shields.io/discord/691052431525675048.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/bevy)
 [![Downloads](https://img.shields.io/crates/d/bevy_procedural_meshes)](https://crates.io/crates/bevy_procedural_meshes)
 [![GitHub Repo stars](https://img.shields.io/github/stars/bevy-procedural/meshes)](https://github.com/bevy-procedural/meshes)
 
 This crate is still in a _very_ early stage of development. Expect frequent API modifications, bugs, and missing features. Feel free to contribute by opening issues, pull requests or sharing your ideas in [Github Discussion](https://github.com/bevy-procedural/meshes/discussions) or the [Bevy Discord](https://discord.gg/bevy).
 
+## Examples
 
-## Examples 
+Run the [examples](https://github.com/bevy-procedural/meshes/tree/main/examples) like, e.g., `cargo run --features="bevy/default" --example 2d`:
 
-Try the live examples!
- * [2d](https://bevy-procedural.org/examples/meshes/2d)
- * [3d](https://bevy-procedural.org/examples/meshes/3d)
+-   [2d](https://github.com/bevy-procedural/meshes/blob/main/examples/2d.rs)
+-   [3d](https://github.com/bevy-procedural/meshes/blob/main/examples/3d.rs)
 
-Or run the [examples](https://github.com/bevy-procedural/meshes/tree/main/examples) on your computer like, e.g., `cargo run --features="bevy/default" --example 2d`.
-
-For package development, we recommend using the `editor`-subcrate. This example has a little [egui](https://github.com/jakobhellermann/bevy-inspector-egui/)-editor. Run it using `cargo watch -w editor/src -w src -x "run -p editor --profile fast-dev"`. The `fast-dev` profile will enable optimizations for the dependencies, but not for the package itself. This will slow down the first build _significantly_, but incremental builds are slightly faster and bevy's performance improves a lot.
-
+The `fast-dev` profile will enable optimizations for the dependencies, but not for the package itself. This will slow down the first build _significantly_, but incremental builds are slightly faster and bevy's performance improves a lot.
 
 ## Usage
 
@@ -52,7 +51,7 @@ fn setup(
             .quadratic_bezier_to(Vec2::new(0.0, 3.0), Vec2::new(0.0, 0.0))
             .close();
     });
-    
+
     commands.spawn((
         Mesh3d(meshes.add(mesh.to_bevy(RenderAssetUsages::all()))),
         MeshMaterial3d(materials.add(StandardMaterial::default())),
@@ -60,16 +59,14 @@ fn setup(
 }
 ```
 
-
 ## Features
 
 The following features are available:
 
-* `meshopt` -- Use [Meshopt](https://github.com/gwihlidal/meshopt-rs) to optimize the performance of generated meshes. 
-* `lyon` -- Use [Lyon](https://github.com/nical/lyon) to tesselate 2D shapes like bezier curves and strokes.
-* `inspector` -- Add [bevy-inspector-egui](https://github.com/jakobhellermann/bevy-inspector-egui)-support to different structs.
-* `dynamic` -- Compiles bevy as a dynamic library. Useful for development builds. 
-
+-   `meshopt` -- Use [Meshopt](https://github.com/gwihlidal/meshopt-rs) to optimize the performance of generated meshes.
+-   `lyon` -- Use [Lyon](https://github.com/nical/lyon) to tesselate 2D shapes like bezier curves and strokes.
+-   `inspector` -- Add [bevy-inspector-egui](https://github.com/jakobhellermann/bevy-inspector-egui)-support to different structs.
+-   `dynamic` -- Compiles bevy as a dynamic library. Useful for development builds.
 
 ## Supported Bevy Versions
 
@@ -77,19 +74,17 @@ The following table shows the compatibility of `bevy_procedural_meshes` with cer
 
 | bevy | bevy_procedural_meshes |
 | ---- | ---------------------- |
-| 0.16 | 0.16.*, main           |
-| 0.15 | 0.15.*                 |
-| 0.14 | 0.14.*                 |
-| 0.13 | 0.1.*                  |
-
+| 0.16 | 0.16.\*, main          |
+| 0.15 | 0.15.\*                |
+| 0.14 | 0.14.\*                |
+| 0.13 | 0.1.\*                 |
 
 ## License
 
 The bevy-procedural packages are free, open source and permissively licensed. Except where noted (below and/or in individual files), all code in these repositories is dual-licensed, allowing you the flexibility to choose between:
 
- - The MIT License (LICENSE-MIT or http://opensource.org/licenses/MIT)
- - The Apache License, Version 2.0 (LICENSE-APACHE or http://www.apache.org/licenses/LICENSE-2.0).
-
+-   The MIT License (LICENSE-MIT or http://opensource.org/licenses/MIT)
+-   The Apache License, Version 2.0 (LICENSE-APACHE or http://www.apache.org/licenses/LICENSE-2.0).
 
 ## Contribution
 

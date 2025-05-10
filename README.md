@@ -53,11 +53,10 @@ fn setup(
             .close();
     });
     
-    commands.spawn(PbrBundle {
-        mesh: meshes.add(mesh.to_bevy(RenderAssetUsages::all())),
-        material: materials.add(StandardMaterial::default()),
-        ..default()
-    });
+    commands.spawn((
+        Mesh3d(meshes.add(mesh.to_bevy(RenderAssetUsages::all()))),
+        MeshMaterial3d(materials.add(StandardMaterial::default())),
+    ));
 }
 ```
 
@@ -78,7 +77,8 @@ The following table shows the compatibility of `bevy_procedural_meshes` with cer
 
 | bevy | bevy_procedural_meshes |
 | ---- | ---------------------- |
-| 0.14 | 0.14.*, main           |
+| 0.15 | 0.15.*, main           |
+| 0.14 | 0.14.*                 |
 | 0.13 | 0.1.*                  |
 
 

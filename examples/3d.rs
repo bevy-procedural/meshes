@@ -9,6 +9,9 @@ use bevy::{
 };
 use bevy_procedural_meshes::*;
 
+#[derive(Resource)]
+struct MeshHandleRes(Option<Handle<Mesh>>);
+
 fn main() {
     App::new()
         .add_plugins((DefaultPlugins, WireframePlugin))
@@ -16,6 +19,7 @@ fn main() {
             global: false,
             default_color: Color::WHITE,
         })
+        .insert_resource(MeshHandleRes(None))
         .add_systems(Startup, setup)
         .add_systems(Update, update)
         .run();
@@ -25,37 +29,39 @@ fn setup(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
+    mut mesh_handle_res: ResMut<MeshHandleRes>,
 ) {
-    commands.spawn(Camera3dBundle {
-        transform: Transform::from_xyz(-2.5, 4.5, 4.0).looking_at(Vec3::ZERO, Vec3::Y),
-        ..default()
-    });
+    commands.spawn((
+        Camera3d::default(),
+        Transform::from_xyz(-2.5, 4.5, 4.0).looking_at(Vec3::ZERO, Vec3::Y),
+    ));
 
-    commands.spawn(DirectionalLightBundle {
-        directional_light: DirectionalLight {
+    commands.spawn((
+        DirectionalLight {
             color: Color::WHITE,
             shadows_enabled: true,
             ..default()
         },
-        transform: Transform {
+        Transform {
             rotation: Quat::from_rotation_x(-PI / 4.),
             ..default()
         },
-        ..Default::default()
-    });
+    ));
 
-    commands.spawn(PbrBundle {
-        mesh: meshes.add(PMesh::<u16>::default().to_bevy(RenderAssetUsages::all())),
-        material: materials.add(StandardMaterial {
+    let mesh = meshes.add(PMesh::<u16>::default().to_bevy(RenderAssetUsages::all()));
+    mesh_handle_res.0 = Some(mesh.clone());
+
+    commands.spawn((
+        Mesh3d(mesh.clone()),
+        MeshMaterial3d(materials.add(StandardMaterial {
             base_color: Color::WHITE,
             ..default()
-        }),
-        ..default()
-    });
+        })),
+    ));
 }
 
 fn update(
-    query: Query<&Handle<Mesh>>,
+    mesh_handle_res: ResMut<MeshHandleRes>,
     mut assets: ResMut<Assets<Mesh>>,
     windows: Query<&Window>,
     camera_q: Query<(&Camera, &GlobalTransform)>,
@@ -81,7 +87,7 @@ fn update(
         let (camera, camera_transform) = camera_q.single();
         if let Some(ray) = window
             .cursor_position()
-            .and_then(|cursor| camera.viewport_to_world(camera_transform, cursor))
+            .and_then(|cursor| camera.viewport_to_world(camera_transform, cursor).ok())
         {
             let distance = ray
                 .intersect_plane(Vec3::ZERO, InfinitePlane3d::new(Vec3::Y))
@@ -98,6 +104,9 @@ fn update(
     // TODO: Extrude the whole shape! However, sorting the vertices is not sufficient for complex shapes.
     // fill.build::<u16>(false).get_vertices_mut().sort_clockwise().extrude(Vec3::Z);
 
-    mesh.flip_yz()
-        .bevy_set(assets.get_mut(query.single().id()).unwrap());
+    mesh.flip_yz().bevy_set(
+        assets
+            .get_mut(mesh_handle_res.0.clone().unwrap().id())
+            .unwrap(),
+    );
 }

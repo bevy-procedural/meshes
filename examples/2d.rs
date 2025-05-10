@@ -1,15 +1,14 @@
 //! This example creates a star overlapping with a circle at the mouse cursor.
 
-use bevy::{
-    prelude::*,
-    render::render_asset::RenderAssetUsages,
-    sprite::{MaterialMesh2dBundle, Mesh2dHandle},
-};
+use bevy::{prelude::*, render::render_asset::RenderAssetUsages};
 use bevy_procedural_meshes::*;
 
+#[derive(Resource)]
+struct MeshHandleRes(Option<Handle<Mesh>>);
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
+        .insert_resource(MeshHandleRes(None))
         .add_systems(Startup, setup)
         .add_systems(Update, update)
         .run();
@@ -19,19 +18,21 @@ fn setup(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<ColorMaterial>>,
+    mut mesh_handle_res: ResMut<MeshHandleRes>,
 ) {
-    commands.spawn(Camera2dBundle::default());
-    commands.spawn(MaterialMesh2dBundle {
-        mesh: meshes
-            .add(PMesh::<u16>::default().to_bevy(RenderAssetUsages::all()))
-            .into(),
-        material: materials.add(Color::WHITE),
-        ..default()
-    });
+    let mesh = meshes.add(PMesh::<u16>::default().to_bevy(RenderAssetUsages::all()));
+
+    mesh_handle_res.0 = Some(mesh.clone());
+
+    commands.spawn(Camera2d::default());
+    commands.spawn((
+        Mesh2d(mesh.clone()),
+        MeshMaterial2d(materials.add(Color::WHITE)),
+    ));
 }
 
 fn update(
-    query: Query<&Mesh2dHandle>,
+    mut mesh_handle_res: ResMut<MeshHandleRes>,
     mut assets: ResMut<Assets<Mesh>>,
     windows: Query<&Window>,
     camera_q: Query<(&Camera, &GlobalTransform)>,
@@ -57,7 +58,7 @@ fn update(
         let (camera, camera_transform) = camera_q.single();
         if let Some(world_position) = window
             .cursor_position()
-            .and_then(|cursor| camera.viewport_to_world_2d(camera_transform, cursor))
+            .and_then(|cursor| camera.viewport_to_world_2d(camera_transform, cursor).ok())
         {
             builder.add_circle(
                 Vec2::new(world_position.x, world_position.y),
@@ -66,5 +67,9 @@ fn update(
             );
         }
     });
-    mesh.bevy_set(assets.get_mut(query.single().0.id()).unwrap());
+    mesh.bevy_set(
+        assets
+            .get_mut(mesh_handle_res.0.clone().unwrap().id())
+            .unwrap(),
+    );
 }

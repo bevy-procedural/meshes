@@ -17,9 +17,6 @@ name = "bevy_procedural_meshes"
 path = "src/lib.rs"
 crate-type = ["rlib"]
 
-[workspace]
-members = ["editor"]
-
 [workspace.lints.clippy]
 type_complexity = "allow"
 doc_markdown = "warn"

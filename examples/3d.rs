@@ -29,7 +29,7 @@ fn setup(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
-    mut mesh_handle_res: ResMut<MeshHandleRes>
+    mut mesh_handle_res: ResMut<MeshHandleRes>,
 ) {
     commands.spawn((
         Camera3d::default(),
@@ -45,13 +45,13 @@ fn setup(
         Transform {
             rotation: Quat::from_rotation_x(-PI / 4.),
             ..default()
-        }
+        },
     ));
 
     let mesh = meshes.add(PMesh::<u16>::default().to_bevy(RenderAssetUsages::all()));
     mesh_handle_res.0 = Some(mesh.clone());
 
-    commands.spawn( (
+    commands.spawn((
         Mesh3d(mesh.clone()),
         MeshMaterial3d(materials.add(StandardMaterial {
             base_color: Color::WHITE,
@@ -61,7 +61,7 @@ fn setup(
 }
 
 fn update(
-    mut mesh_handle_res: ResMut<MeshHandleRes>,
+    mesh_handle_res: ResMut<MeshHandleRes>,
     mut assets: ResMut<Assets<Mesh>>,
     windows: Query<&Window>,
     camera_q: Query<(&Camera, &GlobalTransform)>,
@@ -104,6 +104,9 @@ fn update(
     // TODO: Extrude the whole shape! However, sorting the vertices is not sufficient for complex shapes.
     // fill.build::<u16>(false).get_vertices_mut().sort_clockwise().extrude(Vec3::Z);
 
-    mesh.flip_yz()
-        .bevy_set(assets.get_mut(mesh_handle_res.0.clone().unwrap().id()).unwrap());
+    mesh.flip_yz().bevy_set(
+        assets
+            .get_mut(mesh_handle_res.0.clone().unwrap().id())
+            .unwrap(),
+    );
 }

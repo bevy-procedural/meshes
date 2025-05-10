@@ -1,9 +1,6 @@
 //! This example creates a star overlapping with a circle at the mouse cursor.
 
-use bevy::{
-    prelude::*,
-    render::render_asset::RenderAssetUsages,
-};
+use bevy::{prelude::*, render::render_asset::RenderAssetUsages};
 use bevy_procedural_meshes::*;
 
 #[derive(Resource)]
@@ -21,10 +18,9 @@ fn setup(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<ColorMaterial>>,
-    mut mesh_handle_res: ResMut<MeshHandleRes>
+    mut mesh_handle_res: ResMut<MeshHandleRes>,
 ) {
-    let mesh = meshes
-        .add(PMesh::<u16>::default().to_bevy(RenderAssetUsages::all()));
+    let mesh = meshes.add(PMesh::<u16>::default().to_bevy(RenderAssetUsages::all()));
 
     mesh_handle_res.0 = Some(mesh.clone());
 
@@ -36,7 +32,7 @@ fn setup(
 }
 
 fn update(
-    mut mesh_handle_res: ResMut<MeshHandleRes>,
+    mesh_handle_res: ResMut<MeshHandleRes>,
     mut assets: ResMut<Assets<Mesh>>,
     windows: Query<&Window>,
     camera_q: Query<(&Camera, &GlobalTransform)>,
@@ -71,5 +67,9 @@ fn update(
             );
         }
     });
-    mesh.bevy_set(assets.get_mut(mesh_handle_res.0.clone().unwrap().id()).unwrap());
+    mesh.bevy_set(
+        assets
+            .get_mut(mesh_handle_res.0.clone().unwrap().id())
+            .unwrap(),
+    );
 }

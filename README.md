@@ -9,7 +9,7 @@ The objective of the [Bevy Procedural Project](https://bevy-procedural.org) is t
 
 The [bevy_procedural_meshes](https://bevy-procedural.org/meshes)-crate is a procedural mesh builder for bevy. It can use [Lyon](https://github.com/nical/lyon) to generate 2D shapes and extrude them into 3D meshes. Meshes can also be optimized using [Meshopt](https://github.com/gwihlidal/meshopt-rs) to improve their performance.
 
-# For a more advanced and half-edge-based mesh builder, check out the [procedural modelling](https://github.com/bevy-procedural/modelling) crate.
+# For a more advanced, half-edge-based, and bevy-compatible mesh builder, check out the [procedural modelling](https://github.com/bevy-procedural/modelling) crate.
 
 Once [procedural modelling](https://github.com/bevy-procedural/modelling) has matured enough, _this_ crate will effectively become a bevy plugin for it.
 

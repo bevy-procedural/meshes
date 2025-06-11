@@ -1,11 +1,10 @@
 [package]
 name = "bevy_procedural_meshes"
 description = "Procedural Meshes for the Bevy game engine."
-version = "0.16.0"
+version = "0.16.1"
 edition = "2021"
 categories = ["graphics", "rendering", "game-development"]
 keywords = ["gamedev", "graphics", "bevy", "procedural", "meshes"]
-homepage = "https://bevy-procedural.org/meshes"
 license = "MIT OR Apache-2.0"
 readme = "README.md"
 repository = "https://github.com/bevy-procedural/meshes"

@@ -74,6 +74,36 @@ where
         &mut self.vertices
     }
 
+    /// Returns the indices of the mesh.
+    pub fn get_indices(&self) -> &PIndices<T> {
+        &self.indices
+    }
+
+    /// Returns the indices of the mesh to be modified in-place.
+    pub fn get_indices_mut(&mut self) -> &mut PIndices<T> {
+        &mut self.indices
+    }
+
+    /// Returns the UV coordinates of the mesh.
+    pub fn get_uv(&self) -> Option<&Vec<[f32; 2]>> {
+        self.uv.as_ref()
+    }
+
+    /// Returns the UV coordinates of the mesh to be modified in-place.
+    pub fn get_uv_mut(&mut self) -> Option<&mut Vec<[f32; 2]>> {
+        self.uv.as_mut()
+    }
+
+    /// Returns the normals of the mesh.
+    pub fn get_normals(&self) -> Option<&Vec<[f32; 3]>> {
+        self.normals.as_ref()
+    }
+
+    /// Returns the normals of the mesh to be modified in-place.
+    pub fn get_normals_mut(&mut self) -> Option<&mut Vec<[f32; 3]>> {
+        self.normals.as_mut()
+    }
+
     /// Removes all duplicate indices by duplicating the vertices, uvs, and normals and replacing the indices with a linear sequence.
     pub fn duplicate(&mut self) -> &mut PMesh<T> {
         self.vertices = PVertices::build(

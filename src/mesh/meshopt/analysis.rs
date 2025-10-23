@@ -1,7 +1,7 @@
 use super::super::PMesh;
 use super::util::get_adapter;
 use crate::IndexType;
-use bevy::{ecs::system::Resource, prelude::*};
+use bevy::prelude::*;
 use meshopt::analyze::analyze_vertex_cache;
 use meshopt::{analyze_overdraw, analyze_vertex_fetch};
 

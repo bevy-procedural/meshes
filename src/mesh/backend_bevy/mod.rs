@@ -1,12 +1,6 @@
 use super::PMesh;
 use crate::IndexType;
-use bevy::{
-    prelude::*,
-    render::{
-        mesh::VertexAttributeValues, render_asset::RenderAssetUsages,
-        render_resource::PrimitiveTopology,
-    },
-};
+use bevy::{asset::RenderAssetUsages, mesh::VertexAttributeValues, prelude::*, render::render_resource::PrimitiveTopology};
 
 impl<T> PMesh<T>
 where

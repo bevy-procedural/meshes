@@ -1,3 +1,5 @@
+use bevy::mesh::Indices;
+
 use crate::IndexType;
 use std::ops::Index;
 
@@ -137,9 +139,9 @@ where
 
     /// Convert the indices to a bevy mesh index type.
     /// The appropriate width is chosen based on the size of T.
-    pub fn get_bevy(&self) -> bevy::render::mesh::Indices {
+    pub fn get_bevy(&self) -> Indices {
         if std::mem::size_of::<T>() == std::mem::size_of::<u32>() {
-            bevy::render::mesh::Indices::U32(
+            Indices::U32(
                 self.indices
                     .clone()
                     .into_iter()
@@ -149,7 +151,7 @@ where
         } else if std::mem::size_of::<T>() == std::mem::size_of::<u16>()
             || std::mem::size_of::<T>() == std::mem::size_of::<u8>()
         {
-            bevy::render::mesh::Indices::U16(
+            Indices::U16(
                 self.indices
                     .clone()
                     .into_iter()

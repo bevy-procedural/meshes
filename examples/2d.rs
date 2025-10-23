@@ -1,6 +1,6 @@
 //! This example creates a star overlapping with a circle at the mouse cursor.
 
-use bevy::{prelude::*, render::render_asset::RenderAssetUsages};
+use bevy::{asset::RenderAssetUsages, prelude::*};
 use bevy_procedural_meshes::*;
 
 #[derive(Resource)]

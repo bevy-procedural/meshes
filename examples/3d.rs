@@ -5,7 +5,7 @@ use std::f32::consts::PI;
 use bevy::{
     pbr::wireframe::{WireframeConfig, WireframePlugin},
     prelude::*,
-    render::render_asset::RenderAssetUsages,
+    asset::RenderAssetUsages,
 };
 use bevy_procedural_meshes::*;
 

@@ -1,6 +1,6 @@
 use super::PMesh;
 use crate::IndexType;
-use bevy::{prelude::*, render::mesh::VertexAttributeValues};
+use bevy::{math::Vec3, mesh::VertexAttributeValues};
 use std::ops::Index;
 
 /// A list of vertices.

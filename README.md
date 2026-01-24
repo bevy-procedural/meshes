@@ -24,7 +24,7 @@ This crate is still in a _very_ early stage of development. Expect frequent API 
 
 ## Examples
 
-Run the [examples](https://github.com/bevy-procedural/meshes/tree/main/examples) like, e.g., `cargo run --features="bevy/default" --example 2d --profile fast-dev`:
+Run the [examples](https://github.com/bevy-procedural/meshes/tree/main/examples) like, e.g., `cargo run --features="bevy_example" --example 2d --profile fast-dev`:
 
 -   [2d](https://github.com/bevy-procedural/meshes/blob/main/examples/2d.rs)
 -   [3d](https://github.com/bevy-procedural/meshes/blob/main/examples/3d.rs)
@@ -74,7 +74,8 @@ The following table shows the compatibility of `bevy_procedural_meshes` with cer
 
 | bevy | bevy_procedural_meshes |
 | ---- | ---------------------- |
-| 0.17 | 0.17.\*, main          |
+| 0.18 | 0.18.\*, main          |
+| 0.17 | 0.17.\*                |
 | 0.16 | 0.16.\*                |
 | 0.15 | 0.15.\*                |
 | 0.14 | 0.14.\*                |

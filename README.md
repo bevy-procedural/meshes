@@ -74,7 +74,8 @@ The following table shows the compatibility of `bevy_procedural_meshes` with cer
 
 | bevy | bevy_procedural_meshes |
 | ---- | ---------------------- |
-| 0.18 | 0.18.\*, main          |
+| 0.19 | 0.19.\*, main          |
+| 0.18 | 0.18.\*                |
 | 0.17 | 0.17.\*                |
 | 0.16 | 0.16.\*                |
 | 0.15 | 0.15.\*                |

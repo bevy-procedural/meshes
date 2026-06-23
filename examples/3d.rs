@@ -18,6 +18,7 @@ fn main() {
         .insert_resource(WireframeConfig {
             global: false,
             default_color: Color::WHITE,
+            ..default()
         })
         .insert_resource(MeshHandleRes(None))
         .add_systems(Startup, setup)
@@ -39,7 +40,6 @@ fn setup(
     commands.spawn((
         DirectionalLight {
             color: Color::WHITE,
-            shadows_enabled: true,
             ..default()
         },
         Transform {
@@ -105,7 +105,7 @@ fn update(
     // fill.build::<u16>(false).get_vertices_mut().sort_clockwise().extrude(Vec3::Z);
 
     mesh.flip_yz().bevy_set(
-        assets
+        &mut assets
             .get_mut(mesh_handle_res.0.clone().unwrap().id())
             .unwrap(),
     );

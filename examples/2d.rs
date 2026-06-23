@@ -68,7 +68,7 @@ fn update(
         }
     });
     mesh.bevy_set(
-        assets
+        &mut assets
             .get_mut(mesh_handle_res.0.clone().unwrap().id())
             .unwrap(),
     );
